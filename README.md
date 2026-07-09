@@ -181,10 +181,8 @@ Each entry is written as a short learning note: what to copy into an agentic bug
   - Learn a vendor-neutral SAST harness with threat modeling, multi-lens research, deterministic voting, adversarial verification, structured Markdown/SARIF findings, remediation, and validation. It is especially useful for enterprise systems because it optimizes the full lifecycle from AI-discovered exploitability to a validated fix, not just candidate generation.
 
 - [Anthropic — Defending Code Reference Harness](https://github.com/anthropics/defending-code-reference-harness)
-  - Learn a concrete reference implementation of recon → find → verify → report → patch for C/C++ memory bugs with Docker, ASAN, gVisor isolation, and parallel agents. The reusable parts are the stage contracts, sandbox refusal rules, fresh-container verification, dedupe, exploitability reporting, and patch validation against both the original PoC and renewed search.
+  - Learn a concrete reference implementation of recon → find → verify → report → patch for C/C++ memory bugs with Docker, ASAN, gVisor isolation, and parallel agents. Also study its `.claude/skills` for quickstart, threat-model, vuln-scan, triage, patch, and customization templates; together they show both the runnable harness and the reusable security-work skill layer.
 
-- [Anthropic Reference Harness — Claude Skills](https://github.com/anthropics/defending-code-reference-harness/tree/main/.claude/skills)
-  - Learn how to encode security work as reusable agent skills: quickstart, threat-model, vuln-scan, triage, patch, and customize. These are useful templates for turning expert review habits into repeatable commands with inputs, artifacts, safety boundaries, and expected outputs rather than relying on ad hoc chat instructions.
 
 - [AISLE — nano-analyzer](https://github.com/weareaisle/nano-analyzer)
   - Learn the smallest useful version of an LLM-powered native-code scanner: per-file context generation, vulnerability scan, skeptical triage, and final arbitration. It is a good baseline for severe-bug systems because every extra agentic feature can be compared against a cheap coverage-first pipeline that already finds real candidates.

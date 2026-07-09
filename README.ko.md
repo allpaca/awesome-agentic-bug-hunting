@@ -181,10 +181,8 @@
   - 특정 벤더에 묶이지 않는 SAST 하네스를 배울 수 있습니다. threat modeling, 여러 관점의 분석, 결정론적 투표, 적대적 검증, 구조화된 Markdown/SARIF 결과, remediation, validation이 포함됩니다. 기업 시스템에서는 AI가 발견한 악용 가능성부터 검증된 수정까지 전체 수명주기를 최적화한다는 점이 특히 유용합니다.
 
 - [Anthropic — Defending Code Reference Harness](https://github.com/anthropics/defending-code-reference-harness)
-  - C/C++ 메모리 버그를 위한 정찰 → 발견 → 검증 → 보고 → 패치 reference implementation을 배울 수 있습니다. Docker, ASAN, gVisor 격리, 병렬 에이전트가 포함됩니다. 재사용할 부분은 단계별 계약, sandbox 밖 실행 거부 규칙, 새 컨테이너 검증, 중복 제거, 악용 가능성 보고, 원래 PoC와 재탐색 모두에 대한 패치 검증입니다.
+  - C/C++ 메모리 버그를 위한 정찰 → 발견 → 검증 → 보고 → 패치 reference implementation을 배울 수 있습니다. Docker, ASAN, gVisor 격리, 병렬 에이전트가 포함됩니다. `.claude/skills`의 quickstart, threat-model, vuln-scan, triage, patch, customize 템플릿도 함께 보면 실행 가능한 하네스와 재사용 가능한 보안 작업 스킬 계층을 동시에 배울 수 있습니다.
 
-- [Anthropic Reference Harness — Claude Skills](https://github.com/anthropics/defending-code-reference-harness/tree/main/.claude/skills)
-  - 보안 작업을 재사용 가능한 에이전트 스킬로 만드는 법을 배울 수 있습니다. quickstart, threat-model, vuln-scan, triage, patch, customize가 예시입니다. 전문가의 검토 습관을 즉흥적인 채팅 지시가 아니라 입력, 산출물, 안전 경계, 기대 출력이 정해진 반복 가능한 명령으로 바꾸는 틀로 유용합니다.
 
 - [AISLE — nano-analyzer](https://github.com/weareaisle/nano-analyzer)
   - LLM 기반 native-code scanner의 가장 작은 유용한 버전을 배울 수 있습니다. 파일별 문맥 생성, 취약점 스캔, 회의적 triage, 최종 판정이 핵심입니다. 추가적인 에이전트 기능이 실제로 가치 있는지 비교할 수 있는 저비용 coverage-first 기준선으로 좋습니다.
