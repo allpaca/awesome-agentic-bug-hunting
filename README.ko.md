@@ -112,14 +112,50 @@
   - Big Sleep의 첫 공개 사례를 배울 수 있습니다. 실제 코드에서 LLM이 변종 취약점을 찾고, 실패한 테스트케이스를 고치며, 크래시를 재현하고, maintainer가 조치할 수 있는 원인 분석 보고서를 작성하는 흐름입니다. 가설 → 테스트케이스 → 근본 원인으로 이어지는 피드백 루프를 가져오되, 최신 운영 현황이라기보다는 초기 사례 연구로 보는 편이 좋습니다.
 
 ## 논문
+- [2026-07-08 — Thinking More, Harnessing Better: Project Digestion과 Workflow Decomposition을 이용한 Harness 자동 생성](https://arxiv.org/abs/2607.07007)
+  - 대상이 퍼징이 아니더라도 SynapseFlow의 단계적 하네스 생성 workflow를 배울 수 있습니다. 프로젝트를 structural flow graph로 소화하고, 관련 함수 triplet을 묶은 뒤, correctness가 깨지면 rollback하는 4단계 프로세스로 하네스를 합성합니다. 재사용할 핵심은 one-shot 생성에 기대지 않고, 하네스 생성을 분해 가능하고 측정 가능하며 실패 복구 가능한 과정으로 만드는 것입니다.
+
+- [2026-07 — Thought Is All You Need: Thought-Augmented LLM을 이용한 Smart Contract 취약점 탐지](https://yajin.org/papers/fse2026_synapse.pdf)
+  - Synapse의 사고 템플릿 기반 스마트 컨트랙트 감사 루프를 배울 수 있습니다. 감사 보고서에서 재사용 가능한 취약점 추론 사고를 추출하고, 이를 대상 코드의 핵심 맥락에 맞게 구체화한 뒤, Developer, Researcher, Auditor, Verifier 에이전트와 의미 기반 도구로 검증합니다. 고정 패턴 스캐너나 코드 의미를 이해하지 못하는 퍼징 오라클이 놓치기 쉬운 상태 업데이트 누락과 계약 의미 기반 버그를 겨냥한다는 점에서 논리 버그 헌팅에 특히 유용합니다.
+
 - [2026-07-01 — Knowdit — Auditing Knowledge Summarization을 이용한 Agentic Smart Contract Vulnerability Detection](https://arxiv.org/html/2603.26270v2)
   - 논문 기반 지식 주도 스마트 컨트랙트 감사를 배울 수 있습니다. 인간 감사 보고서에서 감사 지식 그래프를 만들고, DeFi 의미와 버그 패턴을 대상에 대응시킨 뒤, 명세 생성, PoC 합성, 실행, 회고를 반복합니다. 보고된 high 9개와 medium severity unknown finding 36개는 도메인 지식과 실행 가능한 증거가 일반적인 Solidity 냄새 탐지보다 강하다는 점을 보여줍니다.
+
+- [2026-06-20 — Revelio: Repository-Scale Codebase를 위한 비용 효율적 Agentic Memory Safety 취약점 탐지](https://arxiv.org/abs/2606.22263)
+  - 저장소 단위 에이전트를 위한 hallucination 방지 검증 게이트를 배울 수 있습니다. 저렴한 LLM과 가벼운 정적 분석으로 가설을 만들고 순위를 매기지만, 최종 finding은 실행 가능한 Proof-of-Vulnerability가 deterministic sanitizer에서 재현될 때만 살아남습니다. 논리 버그보다는 memory safety 중심이지만, generate-rank-prove 계약은 심각한 버그 헌팅 시스템 전반에 적용할 만한 강한 패턴입니다.
+
+- [2026-05-12 — VulTriage: LLM 기반 취약점 탐지를 위한 Triple-Path Context Augmentation](https://arxiv.org/abs/2605.09461)
+  - 미묘한 의미 차이로 갈리는 취약점을 위한 context packing 단계를 배울 수 있습니다. Control Path는 AST, CFG, DFG 정보를 말로 풀어주고, Knowledge Path는 CWE 기반 패턴과 예시를 검색하며, Semantic Path는 최종 판단 전에 코드 동작을 요약합니다. 완전한 자율 에이전트는 아니지만, 리뷰어에게 control-flow, data-flow, 사전 지식, 동작 요약을 구조화해서 제공하는 하네스 구성요소로 유용합니다.
 
 - [2026-04-22 — Synthesizing Multi-Agent Harnesses for Vulnerability Discovery](https://arxiv.org/abs/2604.20801)
   - 프롬프트뿐 아니라 하네스 자체를 최적화하는 방법을 배울 수 있습니다. 역할, 도구, 통신 구조, 재시도, 조율 규칙을 typed graph DSL로 모델링합니다. 핵심 교훈은 대상에서 나온 런타임 피드백으로 어떤 하네스 구성요소가 실패했는지 진단하고, 체계적으로 다시 설계할 수 있다는 점입니다. 논문은 알려지지 않았던 Chrome zero-day 발견도 보고합니다.
 
+- [2026-03-28 — VulInstruct: Security Specification으로 LLM에 취약점 근본 원인 추론을 가르치기](https://arxiv.org/abs/2511.04014)
+  - 명세 기반 근본 원인 추론을 배울 수 있습니다. 과거 패치와 저장소별 반복 위반에서 안전 동작 기대치를 추출하고, 관련 명세와 사례를 검색한 뒤, 모델이 코드 동작을 기대 보안 속성과 비교해 판단하게 합니다. CWE 패턴 매칭에서 벗어나 invariant/specification 불일치와 명시적 추론으로 이동한다는 점에서 논리 버그 헌팅에 유용합니다.
+
+- [2026-02-10 — QRS: Autonomous Vulnerability Discovery를 위한 Rule-Synthesizing Neuro-Symbolic Triad](https://arxiv.org/abs/2602.09774)
+  - Query, Review, Sanitize 하네스 구성을 배울 수 있습니다. 에이전트가 schema와 예시에서 CodeQL query를 합성하고, 발견 결과를 의미론적으로 검토하며, 후보를 자동 익스플로잇 합성까지 밀어붙입니다. CodeQL이 포함되어 있긴 하지만 핵심은 정해진 SAST 규칙이 아니라 에이전트가 만든 검사를 독립적인 의미 검증과 익스플로잇 관점의 검증으로 걸러내는 구조입니다.
+
+- [2026-02-03 — LogicScan: Smart Contract Business Logic 취약점 탐지를 위한 LLM-driven Framework](https://arxiv.org/abs/2602.03271)
+  - 스마트 컨트랙트 비즈니스 로직 버그 워크플로를 배울 수 있습니다. 성숙한 배포 프로토콜에서 invariant를 채굴하고, 이를 Business Specification Language로 정규화한 뒤, 대상 컨트랙트를 기준 제약과 대조합니다. 목표가 reentrancy나 산술 오류 같은 고정 시그니처가 아니라 누락되었거나 약하게 강제된 business invariant라는 점에서 논리 버그에 직접 맞닿아 있습니다.
+
+- [2026-01-27 — AgenticSCR: Immature Vulnerability 탐지를 위한 Autonomous Agentic Secure Code Review](https://arxiv.org/abs/2601.19138)
+  - pre-commit 단계의 보안 코드 리뷰 에이전트 설계를 배울 수 있습니다. 자율적인 코드 탐색, 도구 호출, 보안 중심 의미 메모리를 사용해 맥락 의존적인 immature vulnerability를 찾습니다. 잡음 많은 SAST 결과를 나중에 보는 대신, 위험한 변경이 production bug로 굳기 전에 리뷰 코멘트가 위치, 설명, 반박 포인트를 제공하게 만드는 것이 핵심입니다.
+
 - [2026-01-12 — AI Agent Smart Contract Exploit Generation](https://arxiv.org/html/2507.05558v2)
   - A1의 실행 중심 익스플로잇 모델을 배울 수 있습니다. LLM에 도메인 도구를 제공하고, 공격 전략을 생성하고, fork된 체인 상태에서 Solidity PoC를 실행하며, 실행 피드백으로 전략을 다듬습니다. 논문의 핵심 원칙은 “구체적으로 검증된 수익성 있는 PoC 익스플로잇만 보고한다”는 점이며, 62.96% VERITE 성공률은 Web3 에이전트 출력의 강한 기준으로 유용합니다.
+
+- [2025-12-08 — VulnLLM-R: 취약점 탐지를 위한 Specialized Reasoning LLM과 Agent Scaffold](https://arxiv.org/abs/2512.07533)
+  - 취약점 추론 모델을 프로젝트 단위 헌팅 에이전트 scaffold로 감싸는 방식을 배울 수 있습니다. 프로그램 상태를 추론하고, 추론 시점 최적화를 적용하며, 실제 저장소에서 CodeQL과 AFL++ baseline을 기준으로 검증합니다. LogicScan이나 Synapse만큼 논리 버그에 특화된 것은 아니지만, 모델 특화, 에이전트 scaffold, 실제 finding 검증을 분리해 보는 데 유용합니다.
+
+- [2025-08 — LLMxCPG: Code Property Graph 기반 Context-Aware 취약점 탐지](https://www.usenix.org/conference/usenixsecurity25/presentation/lekssays)
+  - 저장소 단위 에이전트를 위한 context reducer를 배울 수 있습니다. CPG 기반 slice를 만들어 function-level과 multi-function 사례에서 취약점 관련 맥락을 보존하면서 코드 크기를 줄입니다. 그 자체로 agentic workflow는 아니지만, LLM 리뷰어가 어떤 코드, 의존성, 문법 변형을 봐야 하는지 결정하는 pre-agent 계층으로 실용적입니다.
+
+- [2025-07 — Code Repository 취약점 탐지를 위한 LLM/LLM Agent 벤치마킹](https://aclanthology.org/2025.acl-long.1490/)
+  - 저장소 단위 에이전트를 평가하는 하네스를 배울 수 있습니다. JITVul은 vulnerable function을 취약점을 도입한 커밋과 고친 커밋에 연결해, 에이전트가 고립된 함수가 아니라 interprocedural, multi-hop 맥락을 다루게 만듭니다. ReAct agent 결과는 맥락과 도구 사용이 좋아져도 과잉 분석과 guard 오독이 남는다는 점을 보여주므로, 버그 헌팅 하네스의 현실성 검증에 유용합니다.
+
+- [2024-09-14 — iAudit: Fine-Tuning과 LLM-based Agent를 결합한 Smart Contract 감사](https://arxiv.org/abs/2403.16073)
+  - iAudit의 2단계 스마트 컨트랙트 감사 루프를 배울 수 있습니다. Detector가 취약해 보이는 코드를 찾고, Reasoner가 원인을 제시한 뒤, Ranker와 Critic 에이전트가 어떤 원인이 증거를 가장 잘 설명하는지 토론합니다. 논리적 스마트 컨트랙트 finding에는 단순한 vulnerable/not-vulnerable 라벨보다 원인 선택과 적대적 정당화가 필요하다는 점이 핵심입니다.
 
 ## 프로젝트
 - [Cloudflare — security-audit-skill](https://github.com/cloudflare/security-audit-skill)

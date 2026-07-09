@@ -112,14 +112,50 @@ Each entry is written as a short learning note: what to copy into an agentic bug
   - Learn the first public Big Sleep case study: LLM-assisted variant hunting over real code, adapting failing testcases, reproducing crashes, and writing maintainer-actionable root-cause reports. Use it for the concrete feedback loop from hypothesis to testcase to root cause, while treating it as an early case study rather than the current state of Big Sleep operations.
 
 ## Papers
+- [2026-07-08 — Thinking More, Harnessing Better: State Machine Guided Harness Automatic Generation with Project Digestion and Workflow Decomposition](https://arxiv.org/abs/2607.07007)
+  - Learn SynapseFlow's staged harness-generation workflow even if your target is not fuzzing: digest the project into structural flow graphs, aggregate coherent function triplets, then synthesize harnesses through a four-stage process with rollback when correctness breaks. The transferable lesson is to make harness construction decomposed, measurable, and failure-recoverable instead of trusting one-shot generation.
+
+- [2026-07 — Thought Is All You Need: Smart Contract Vulnerability Detection with Thought-Augmented Large Language Model](https://yajin.org/papers/fse2026_synapse.pdf)
+  - Learn Synapse's thought-augmented smart-contract auditing loop: distill reusable vulnerability-reasoning thoughts from audit reports, instantiate them against focal code context, then coordinate Developer, Researcher, Auditor, and Verifier agents with semantic tools. It is especially useful for logic/state bugs because the workflow targets missing state updates and contract semantics that fixed-pattern scanners and non-semantic fuzzing oracles tend to miss.
+
 - [2026-07-01 — Knowdit — Agentic Smart Contract Vulnerability Detection with Auditing Knowledge Summarization](https://arxiv.org/html/2603.26270v2)
   - Learn knowledge-driven smart-contract auditing from the paper: build an auditing knowledge graph from human reports, map DeFi semantics and bug patterns onto a target, then iterate specification generation, PoC synthesis, execution, and reflection. Its reported 9 high- and 36 medium-severity unknown findings show why domain knowledge plus executable proof beats generic Solidity smell scanning.
+
+- [2026-06-20 — Revelio: Cost-Efficient Agentic Memory Safety Vulnerability Detection for Repository-Scale Codebases](https://arxiv.org/abs/2606.22263)
+  - Learn a hallucination-resistant validation gate for repository-scale agents: inexpensive LLMs and lightweight static analysis generate and rank hypotheses, but a finding survives only when an executable Proof-of-Vulnerability is reproduced under a deterministic sanitizer. It is memory-safety focused rather than logic-bug focused, yet the generate-rank-prove contract is a strong pattern for any serious bug-hunting system.
+
+- [2026-05-12 — VulTriage: Triple-Path Context Augmentation for LLM-Based Vulnerability Detection](https://arxiv.org/abs/2605.09461)
+  - Learn a context-packing stage for subtle semantic vulnerabilities: a Control Path verbalizes AST, CFG, and DFG facts, a Knowledge Path retrieves CWE-derived patterns and examples, and a Semantic Path summarizes behavior before the final judgment. It is not a full autonomous agent, but it is a useful harness component for giving reviewers structured control-flow, data-flow, prior-knowledge, and behavior context.
 
 - [2026-04-22 — Synthesizing Multi-Agent Harnesses for Vulnerability Discovery](https://arxiv.org/abs/2604.20801)
   - Learn how to optimize the harness itself, not just the prompts: roles, tools, communication topology, retries, and coordination protocol are modeled in a typed graph DSL. The key lesson is that runtime feedback from the target can diagnose which harness component failed, enabling systematic rewrites that reportedly found previously unknown Chrome zero-days.
 
+- [2026-03-28 — VulInstruct: Teaching LLMs Root-Cause Reasoning for Vulnerability Detection via Security Specifications](https://arxiv.org/abs/2511.04014)
+  - Learn specification-guided root-cause reasoning: extract safe-behavior expectations from historical patches and repository-specific repeated violations, retrieve relevant specs and cases, then force the model to judge code behavior against the expected security property. This is useful for logical-bug hunting because it moves the agent away from CWE-pattern matching and toward invariant/specification mismatch with explicit reasoning.
+
+- [2026-02-10 — QRS: A Rule-Synthesizing Neuro-Symbolic Triad for Autonomous Vulnerability Discovery](https://arxiv.org/abs/2602.09774)
+  - Learn the Query, Review, Sanitize harness shape: autonomous agents synthesize CodeQL queries from schemas and examples, semantically review findings, and push candidates toward automated exploit synthesis. Although CodeQL is in the loop, the transferable idea is not canned SAST; it is agent-generated checks plus independent semantic and exploit-oriented validation.
+
+- [2026-02-03 — LogicScan: An LLM-driven Framework for Detecting Business Logic Vulnerabilities in Smart Contracts](https://arxiv.org/abs/2602.03271)
+  - Learn a business-logic bug workflow for smart contracts: mine invariants from mature deployed protocols, normalize them into a Business Specification Language, and contrast target contracts against those reference constraints. This is directly aligned with logical bugs because the target is missing or weakly enforced business invariants, not reentrancy, arithmetic, or other fixed signatures.
+
+- [2026-01-27 — AgenticSCR: An Autonomous Agentic Secure Code Review for Immature Vulnerabilities Detection](https://arxiv.org/abs/2601.19138)
+  - Learn a pre-commit secure-review agent design: autonomous code navigation, tool invocation, and security-focused semantic memories for context-dependent immature vulnerabilities. The reusable lesson is to make review comments localize, explain, and challenge risky changes before they become production bugs, instead of relying on noisy SAST output after the fact.
+
 - [2026-01-12 — AI Agent Smart Contract Exploit Generation](https://arxiv.org/html/2507.05558v2)
   - Learn A1's execution-driven exploit model: give the LLM domain tools, generate strategies, run Solidity PoCs against forked chain state, and refine from execution feedback. The paper's key discipline is reporting only concretely validated profitable PoC exploits, with a 62.96% VERITE success rate—useful as a hard standard for Web3 agent outputs.
+
+- [2025-12-08 — VulnLLM-R: Specialized Reasoning LLM with Agent Scaffold for Vulnerability Detection](https://arxiv.org/abs/2512.07533)
+  - Learn how a vulnerability-reasoning model is wrapped in an agent scaffold for project-level hunting: reason about program states, apply test-time optimization, and validate on real repositories against CodeQL and AFL++ baselines. It is less logic-bug-specific than LogicScan or Synapse, but useful for separating model specialization, agent scaffolding, and real-world finding validation.
+
+- [2025-08 — LLMxCPG: Context-Aware Vulnerability Detection Through Code Property Graph-Guided Large Language Models](https://www.usenix.org/conference/usenixsecurity25/presentation/lekssays)
+  - Learn a context reducer for repository-scale agents: construct CPG-based slices that shrink code while preserving vulnerability-relevant context across function-level and multi-function cases. This is not an agentic workflow by itself, but it is a practical pre-agent layer for deciding what code, dependencies, and syntactic variants an LLM reviewer should see.
+
+- [2025-07 — Benchmarking LLMs and LLM-based Agents in Practical Vulnerability Detection for Code Repositories](https://aclanthology.org/2025.acl-long.1490/)
+  - Learn an evaluation harness for repository-level agents: JITVul links vulnerable functions to vulnerability-introducing and fixing commits, forcing agents to handle interprocedural, multi-hop context rather than isolated snippets. Its ReAct-agent results are useful as a reality check for bug-hunting harnesses because better context and tool use still produce over-analysis and guard misreadings.
+
+- [2024-09-14 — Combining Fine-Tuning and LLM-based Agents for Intuitive Smart Contract Auditing with Justifications](https://arxiv.org/abs/2403.16073)
+  - Learn iAudit's two-stage smart-contract audit loop: a Detector identifies likely vulnerable code, a Reasoner proposes causes, then Ranker and Critic agents debate which cause best explains the evidence. The useful workflow lesson is that logical smart-contract findings need cause selection and adversarial justification, not just a binary vulnerable/not-vulnerable label.
 
 ## Projects
 - [Cloudflare — security-audit-skill](https://github.com/cloudflare/security-audit-skill)
