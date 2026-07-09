@@ -14,6 +14,7 @@ Last reviewed: 2026-07-09
 - [Articles](#articles)
 - [Papers](#papers)
 - [Projects](#projects)
+- [Reference](#reference)
 
 ## About this list
 
@@ -181,3 +182,10 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 
 - [Trail of Bits — Buttercup](https://github.com/trailofbits/buttercup)
   - Learn a runnable AIxCC-derived vulnerability-finding and patching pipeline for OSS-Fuzz-like targets with task monitoring, fuzzing, PoV handling, and patch generation. Use it to study how traditional dynamic testing and LLM agents can share state, avoid duplicate work, and produce fixes that are validated rather than merely suggested.
+
+## Reference
+- [Alin-Mihai BARBATEI — Notes on building a smart contract security auditing harness](https://www.linkedin.com/posts/alin-mihai-barbatei-27772b54_notes-on-building-a-smart-contract-security-activity-7476636721527455744-favn)
+  - Referenced while selecting smart-contract auditing Articles and workflow-oriented resources. It helped frame the recurring harness stages used in this list: codebase context/recon, lead generation, finding identification, issue validation, and PoC writing.
+
+- [huhusmang — Awesome LLMs for Vulnerability Detection](https://github.com/huhusmang/Awesome-LLMs-for-Vulnerability-Detection)
+  - Referenced while expanding the Papers section. It served as a broad index for LLM-based vulnerability-detection papers; this list only pulled in the entries that were most relevant to agentic bug hunting, workflow design, harness construction, semantic reasoning, or exploit validation.

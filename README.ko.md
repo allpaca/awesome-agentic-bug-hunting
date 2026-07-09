@@ -14,6 +14,7 @@
 - [아티클](#아티클)
 - [논문](#논문)
 - [프로젝트](#프로젝트)
+- [레퍼런스](#레퍼런스)
 
 ## 이 리스트에 대하여
 
@@ -181,3 +182,10 @@
 
 - [Trail of Bits — Buttercup](https://github.com/trailofbits/buttercup)
   - OSS-Fuzz 스타일 대상을 찾고 패치하는 실행 가능한 AIxCC 기반 취약점 발견·패치 파이프라인을 배울 수 있습니다. 작업 모니터링, fuzzing, PoV 처리, 패치 생성이 핵심입니다. 전통적 동적 테스트와 LLM 에이전트가 상태를 공유하고, 중복 작업을 피하고, 단순 제안이 아니라 검증된 수정을 만드는 방식을 연구하기 좋습니다.
+
+## 레퍼런스
+- [Alin-Mihai BARBATEI — Smart Contract Security Auditing Harness 구축 노트](https://www.linkedin.com/posts/alin-mihai-barbatei-27772b54_notes-on-building-a-smart-contract-security-activity-7476636721527455744-favn)
+  - 스마트 컨트랙트 감사 관련 Articles와 workflow 중심 자료를 고를 때 참고했습니다. 이 리스트에서 반복해서 등장하는 codebase context/recon, lead generation, finding identification, issue validation, PoC writing 같은 하네스 단계를 잡는 데 도움이 된 출처입니다.
+
+- [huhusmang — Awesome LLMs for Vulnerability Detection](https://github.com/huhusmang/Awesome-LLMs-for-Vulnerability-Detection)
+  - Papers 섹션을 보강할 때 참고했습니다. LLM 기반 취약점 탐지 논문을 넓게 모아 둔 색인으로 사용했고, 그중에서도 agentic bug hunting, workflow 설계, harness 구성, semantic reasoning, exploit validation에 직접 도움이 되는 항목만 선별했습니다.
