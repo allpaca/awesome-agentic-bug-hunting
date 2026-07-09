@@ -1,5 +1,7 @@
 # Awesome Agentic Bug Hunting
 
+Languages: English | [한국어](README.ko.md)
+
 A curated list of public resources about using coding agents, LLM-driven harnesses, skills, and repeatable workflows to find and validate real software vulnerabilities.
 
 The focus is practical agentic bug hunting: source-code or binary exploration, vulnerability hypothesis generation, validation, PoC construction, triage, and repeatable harness design.
@@ -22,130 +24,133 @@ Last reviewed: 2026-07-09
 - A case study where an agent helped find, validate, reproduce, or report real vulnerabilities.
 - A research method where the LLM directly participates in discovery, hypothesis generation, validation, or specification inference.
 
+Each entry is written as a short learning note: what to copy into an agentic bug-hunting system that is trying to find serious, reproducible vulnerabilities rather than generic security observations.
+
 ## Articles
 
 - [Anthropic — Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
-  General long-running agent harness design: decomposed tasks, structured handoff artifacts, generator/evaluator separation, and resets for maintaining coherence over multi-hour autonomous work.
+  - Learn the long-run harness mechanics Anthropic calls out directly: generator/evaluator separation, concrete grading criteria, decomposed chunks, structured artifacts, and context resets with handoffs. For bug hunting, copy this as hunter/verifier separation plus evidence files and reset-safe state so multi-hour scans do not drift into self-approved weak findings.
 
-- [Anthropic — Mythos: Previewing a Frontier Vulnerability Discovery System](https://www.anthropic.com/research/mythos-preview)
-  Describes the Mythos scaffold: isolate the source, ask an agent to inspect code, generate hypotheses, run the program, confirm or reject findings, and output reports with PoCs. Also describes file ranking and parallel agent passes.
+- [Anthropic — Mythos: Assessing Claude Mythos Preview’s cybersecurity capabilities](https://www.anthropic.com/research/mythos-preview)
+  - Learn the Mythos Preview loop from the source: rank files by bug likelihood, send parallel agents at different files, and require bug reports with PoC exploits and reproduction steps. The serious-hunting lesson is to separate coverage and diversity from proof, then let many focused passes generate candidates that still need objective exploit evidence.
 
 - [Anthropic — AI agents find $4.6M in blockchain smart contract exploits](https://www.anthropic.com/research/smart-contracts)
-  Smart-contract agent study with a sandboxed local-fork environment and MCP-exposed tools. Kept despite the benchmark framing because it includes novel previously unknown smart-contract vulnerabilities and concrete lessons about executable exploit validation.
+  - Learn how a domain sandbox changes agent behavior: MCP-exposed Foundry/anvil/cast tools, forked-chain state, executable tests, and a hard success signal based on a working exploit. For serious Web3 hunting, the loop should report only concrete, economically meaningful PoCs and treat failed transactions as feedback for the next exploit strategy.
 
 - [OpenAI — Harness Engineering](https://openai.com/index/harness-engineering/)
-  General agent-first engineering lessons: make repositories legible to agents, encode constraints mechanically, expose validation signals, and design feedback loops so agents can perform reliable long-running work.
+  - Learn how OpenAI made agent work legible: AGENTS.md as a map, repo-local docs as the system of record, mechanical lint/CI checks, worktree-isolated app instances, DevTools, logs, metrics, and traces. For bug hunting, make the target equally inspectable and executable before autonomy: maps, threat docs, validation commands, observability, and cleanup loops.
 
 - [OpenAI — Codex Security](https://openai.com/index/codex-security-now-in-research-preview/)
-  System writeup for an application-security agent that builds project context and threat models, validates findings in sandboxed environments where possible, proposes patches, and reports concrete OSS vulnerability examples.
+  - Learn the product-shaped loop for appsec agents: build system context, create an editable threat model, prioritize by real impact, validate in a sandbox where possible, and propose patches that match system intent. This is useful for filtering serious bugs from checklist noise because severity is grounded in attacker capability, reachability, and project-specific trust boundaries.
 
 - [Google Project Zero — Project Naptime](https://projectzero.google/2024/06/project-naptime.html)
-  Research prototype for LLM-assisted vulnerability research. Important for its agent interface design: code browsing, debugging, running experiments, and iterative reasoning.
+  - Learn agent-interface design for vulnerability research: precise code browsing, reference lookup, Python input generation, debugger access, sanitizer-backed execution, and structured reporting. The key takeaway is to give the model researcher-grade tools with narrow affordances instead of raw unlimited shell, then verify progress through crashes or other objective runtime oracles.
 
 - [Google Project Zero — From Naptime to Big Sleep](https://projectzero.google/2024/10/from-naptime-to-big-sleep.html)
-  Follow-up on moving from a research prototype toward a more capable vulnerability-research agent, with a useful trajectory of hypothesis formation, failed testcase adaptation, crash reproduction, and root-cause reporting.
+  - Learn how the Naptime idea moves into real-world variant hunting: choose a well-scoped target, adapt failing testcases, reproduce crashes, and write root-cause reports that maintainers can act on. The valuable lesson is the feedback path from hypothesis to testcase to root cause, plus the caution that target-specific fuzzers and human review still matter.
 
 - [Cloudflare — Build Your Own Vulnerability Harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/)
-  A practical walkthrough on building a vulnerability harness around frontier models: staged persistence, dynamic threat modeling, per-task sandboxes, wishlist/resource handoff, cross-repo tracing, dedupe, and validation gates.
+  - Learn a production-like pipeline shape: recon, hunt, gap fill, trace, dedupe, judgment, fixing, and a validation system that can consume findings from multiple harnesses. The strongest ideas to reuse are staged persistence, micro-forks for narrow investigations, wishlist/resource handoffs, cross-repo tracing, and gates that stop unvalidated leads from becoming reports.
 
 - [Team Atlanta — From Harness to Vulnerability: AI Agents for Code Comprehension and Bug Discovery](https://team-atlanta.github.io/blog/post-mlla-disc-agents/)
-  First-place AIxCC team deep dive on the quiet discovery agents behind Atlantis: harness entrypoint analysis, precise function retrieval, recursive call-graph construction, tainted-argument tracking, and sink annotation before exploit generation. Useful because it explains how to turn a huge repo into focused vulnerability leads instead of relying on broad prompts.
+  - Learn how AIxCC-scale agents shrink a huge codebase into exploitable leads: identify harness entrypoints, retrieve exact functions, recursively build call graphs, track tainted arguments, and annotate sinks. This is a template for severe bug hunting because exploit generation starts only after the system has proven attacker-controlled data can reach security-relevant operations.
 
 - [Trail of Bits — Buttercup is now open-source!](https://blog.trailofbits.com/2025/08/08/buttercup-is-now-open-source/)
-  Second-place AIxCC team's open-source release note with concrete architecture: AI-augmented vulnerability discovery, contextual static analysis, PoV deduplication, and seven-agent patch generation/validation. Kept as the most useful Buttercup overview; older pre-final AIxCC posts are intentionally excluded.
+  - Learn the end-to-end vulnerability-discovery architecture behind a top AIxCC system: AI-augmented input generation, contextual static analysis, PoV deduplication, patch generation, and validation. For an autonomous hunter, Buttercup is most useful as a reference for coordinating fuzzing, LLM reasoning, duplicate control, and repair loops without trusting a single agent's conclusion.
 
 - [Xint — Building Effective LLM Agents | AI Cyber Challenge](https://xint.io/blog/building-effective-llm-agents-ai-cyber-challenge-165236)
-  Agent-design lessons from Theori's AIxCC work: decompose vulnerability discovery, PoV generation, root-cause analysis, and patching into narrower agents; curate tools instead of exposing raw bash; and force structured outputs that include trigger conditions.
+  - Learn Theori's practical agent-design rules: use agents for tasks humans solve heuristically, decompose vulnerability detection, PoV generation, patching, and root-cause analysis, and constrain each role with curated tools. The source-backed details to copy are structured outputs, a dedicated terminate tool, required tool calls, validation feedback, and progress interventions.
 
 - [Xint — Copy Fail: 732 Bytes to Root on Every Major Linux Distribution](https://xint.io/blog/copy-fail-linux-distributions)
-  High-signal kernel case study: a human researcher supplied the key attack-surface observation, then Xint Code scaled the search across Linux crypto paths and surfaced CVE-2026-31431. Useful for learning how operator prompts can encode one sharp invariant and let an agent search the combinatorial space around it.
+  - Learn how a sharp human invariant plus an agentic search loop can expose a catastrophic kernel bug: page-cache-backed data should not enter writable crypto scatterlists. The reusable pattern is to seed the agent with one precise cross-subsystem suspicion, let it variant-mine the combinatorial surface, then judge severity by the resulting primitive and reproducible exploit path.
 
 - [AISLE — System Over Model: Zero-Day Discovery at the Jagged Frontier](https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier)
-  Concrete counterpoint to frontier-only thinking: a simple parallel scanner generates per-file security context, scans for C/C++ memory-safety bugs, then runs skeptical multi-round triage. Useful for learning how coverage, cheap models, and triage can surface real kernel/native bugs.
+  - Learn why coverage, cheap parallelism, and skeptical triage can beat a single brilliant pass: generate per-file security context, scan function by function, then challenge findings over multiple rounds. This is a strong design for budget-aware serious hunting because it spends tokens seeing more code first, then escalates reasoning only on candidates that survive adversarial review.
 
 - [Microsoft — MDASH](https://www.microsoft.com/en-us/security/blog/2026/05/12/defense-at-ai-speed-microsofts-new-multi-model-agentic-security-system-tops-leading-industry-benchmark/)
-  Closed but unusually concrete writeup of a multi-model agentic scanning harness: prepare, scan, validate, dedupe, prove, and patch-oriented stages with auditor, debater, prover, and domain-plugin roles.
+  - Learn MDASH's concrete stages: prepare language-aware indices and threat models, scan with auditor agents, validate with debaters, dedupe semantic duplicates, and prove bugs with dynamic triggers such as ASan cases. The key lesson is not one agent but 100+ specialized agents whose disagreement, failed refutation, and proof artifacts raise confidence.
 
 - [ClickHouse — How I Hunt for Vulnerabilities with AI](https://clickhouse.com/blog/how-i-hunt-for-vulnerabilities-with-ai)
-  Tsvetan Stoychev describes using LLMs to navigate a large C++ codebase, generate hypotheses, inspect dataflow, validate locally, and write reports. Valuable because it focuses on the human-in-the-loop workflow rather than full autonomy.
+  - Learn a pragmatic human-in-the-loop workflow for large C++ systems: use LLMs to navigate architecture, propose hypotheses, trace dataflow, and write PoCs, but assume many high-severity-looking findings are false. The lesson for automation is to require local reproduction, containerized setup, exact trigger conditions, and evidence strong enough for a maintainer report.
 
 - [Praetorian — AI Vulnerability Research in the FreeBSD Kernel](https://www.praetorian.com/blog/ai-vulnerability-research-freebsd-kernel/)
-  A kernel-focused case study using agentic coding tools, custom prompts, skills, and KASAN-backed validation loops. Useful for seeing how agentic research changes the speed of auditing and vulnerability discovery without removing expert review.
+  - Learn how to turn kernel auditing into an executable oracle loop: source review, hypothesis, trigger program, instrumented VM, KASAN telemetry, and iterative reproducer repair. For severe native-code hunting, the important piece is the validation environment; the agent should be able to fail, observe sanitizer output, adjust the PoC, and know when to abandon an invalid lead.
 
 - [Security Cryptography Whatever — AI Bug Finding (with Nicholas Carlini)](https://securitycryptographywhatever.com/2026/03/25/ai-bug-finding/)
-  Podcast conversation on systematically finding bugs with Claude Code — auditing codebases with plain “find a bug” prompts and disclosing hundreds of real vulnerabilities to projects like Firefox. Useful for how a practitioner frames discovery, triage, and disclosure at scale.
+  - Learn the operational reality of scaling AI bug discovery: reusable harnessing can find many issues quickly, but validation, responsible disclosure, and maintainer-actionable reports become the bottleneck. Use it to design throughput controls: dedupe aggressively, track report quality, budget human review for severe candidates, and measure fix cost as well as find rate.
 
 - [Monad — Monad Bugfinder](https://www.monad.xyz/blog/monad-bugfinder)
-  A practical bug-hunting workflow inspired by Anthropic Mythos and TxRay. The design separates discovery from validation, uses a structured database as the source of truth, and treats triage as a different task from finding leads.
+  - Learn a Web3 workflow inspired by Mythos and TxRay: separate discovery from validation, persist every lead in a structured database, and treat triage as a distinct job. This is useful because serious autonomous hunting needs a durable source of truth for hypotheses, evidence, duplicates, exploit attempts, and reviewer decisions rather than chat transcript memory.
 
 - [Gustavo Grieco — Introducing Quimera](https://gustavo-grieco.github.io/blog/introducing-quimera/)
-  Feedback-driven exploit-generation loop for Ethereum contracts using source/on-chain context and Foundry traces. Useful mainly for the insight that LLMs perform best when the loop has an executable success signal and tight failure feedback.
+  - Learn feedback-driven exploit generation for Ethereum contracts: combine source code, on-chain context, Foundry traces, and Solidity PoC iteration around a single high-impact goal, draining funds. The lesson is to narrow the vulnerability class, wire in an executable success signal, and let trace failures guide the next strategy instead of asking for broad audit commentary.
 
 - [Yue Xue — AI Auditing Methodology: Agent Self-Evolution, Drift, Reverse Evolution and Solutions](https://www.linkedin.com/pulse/ai-auditing-methodology-agent-self-evolution-drift-reverse-yue-xue-uqsse/)
-  Field notes on why long-running audit agents drift, and how to control them by decomposing the project, defining narrow tasks, and reasoning over entrypoints, assets, state, trust boundaries, and invariants.
+  - Learn how long-running audit systems fail: vulnerability drift moves the agent to easier nearby issues, and reverse evolution makes prompts bigger without improving hit rate. The reusable design is decomposition → task definition → reasoning, with each task anchored by target, boundary, witness, completion condition, verifier, and local evolution rules.
 
 - [Yue Xue — AI Auditing Methodology, Part I](https://x.com/xy9301/status/2033186266649640980)
-  First installment of the same smart-contract auditing methodology series, linked from Alin-Mihai BARBATEI's post.
+  - Learn the X Article's core thesis: AI security is shifting from framework-driven pipelines to coding-agent-driven workflows that first reproduce the human audit process and then automate it. For a serious hunter, start with flexible agent exploration over rich project material instead of over-preprocessing everything into a brittle static framework.
 
 - [Yue Xue — AI Auditing Methodology, Part II](https://x.com/xy9301/status/2036017855381340269)
-  Second installment of the same smart-contract auditing methodology series.
+  - Learn the self-evolution requirements named in the article: variation, selection, and inheritance. For bug-hunting systems, that means trying new prompts/skills/decompositions, judging them with benchmarks or human review, retaining rollbackable experience, and treating dedupe, validation, and PoC generation as workflow-critical—not demo polish.
 
 - [pkqs91 / Octane Security — How I Made $200k With Codex in 3 Months](https://x.com/pkqs91/status/2070157806104457395)
-  A widely shared bug-bounty field note. The durable lesson is not “ask an agent to find bugs”, but to build a harness around recon, context-building, attack-surface mapping, lead generation, validation, PoC writing, and reporting.
+  - Learn the actual bug-bounty loop described in the X Article: intake turns scope, severity rules, exclusions, docs, and code into a local bundle; hunting explores wide; verification kills out-of-scope, guarded, or no-impact leads. The durable rule is “explore wide, exploit deep” and manually reproduce only the few candidates that survive impact filtering.
 
 - [Plamen Tsanev — BEAST post](https://x.com/p_tsanev/status/2041880807032119670)
-  Original field note behind the Plamen orchestrator. Useful for understanding the motivation behind multi-worker Web3 audit orchestration.
+  - Learn why the first “few agents over the whole codebase” experiment failed, and why Plamen moved to specialized recursion. The article lays out an 8-phase flow—recon, instantiation, breadth, inventory/semantic analysis, depth, chain analysis, PoC, and report—useful for finding compound logic bugs that fatigue-prone humans miss.
 
 - [Zero Cool Labs — Symmetry Sniper](https://x.com/ZeroCool_AI/status/2069443859327705497)
-  Public note about a narrow Web3 agent skill focused on symmetry-style bug discovery. Useful as an example of building small, specialized security skills instead of one broad auditor.
+  - Learn the narrow-skill pattern from the X Article: establish an intended mirror from docs, names, events, interfaces, or tests, then compare writes, asset movement, authorization, rounding, zero cases, and bounds. It reports only measurable impacts such as invariant breaks, auth mismatches, fee/rounding asymmetry, or batch bypasses—good discipline for high-signal skills.
 
 - [Alin-Mihai BARBATEI — Notes on building a smart contract security auditing harness](https://www.linkedin.com/posts/alin-mihai-barbatei-27772b54_notes-on-building-a-smart-contract-security-activity-7476636721527455744-favn)
-  A compact reading list around agentic smart-contract auditing. The useful taxonomy is: discovery/recon, lead generation, finding identification, issue validation, and PoC writing.
+  - Learn the lifecycle taxonomy for a Web3 audit harness: discovery/recon, lead generation, finding identification, issue validation, and PoC writing. This is valuable as a checklist for assigning agents to stages and for ensuring every candidate has moved from "interesting lead" to "validated exploit scenario" before it reaches a report.
 
 - [Night-Wolf — Reasoning-First Vulnerability Research That Found Multiple Bugs in an Open Source Project](https://blogs.night-wolf.io/reasoning-first-vulnerability-research-that-found-multiples-bugs-in-open-source-project)
-  A clean example of a reasoning-first workflow: scope and setup, discovery, triage, private report, coordinated fix. The repeated loop is model, hypothesize, investigate, confirm, record.
+  - Learn the article's explicit loop: MODEL the target, HYPOTHESIZE attacker-controlled input and violated assumption, INVESTIGATE dataflow by reading code, CONFIRM with a minimal local PoC, and RECORD or discard. This is a clean template for forcing agents to cross from reasoning into evidence before private disclosure.
 
 - [Night-Wolf — AI-Powered Bug Hunting in Closed Source Software](https://blogs.night-wolf.io/ai-powered-bug-hunting-in-closed-source-software)
-  Shows a closed-source workflow around decompilation, skill building, candidate finding, confirmation, and black-box validation evidence.
+  - Learn how to adapt agentic hunting when source is unavailable: decompile, build a decompiler skill, run multi-angle review, filter impossible preconditions, and validate candidates black-box. The severe-bug lesson is to treat reversing artifacts as lossy evidence and require runtime confirmation that the claimed attacker path exists in the real binary.
 
 - [Devansh — Needle in the Haystack: LLMs for Vulnerability Research](https://devansh.bearblog.dev/needle-in-the-haystack/)
-  Short field note on why broad prompts create broad hallucinations. The practical takeaway is to build a threat model from prior vulnerability reports and plausible bug classes before asking for findings.
+  - Learn why vague "find bugs" prompts fail: without threat model, attacker capability, trust boundaries, and prior CVE context, models produce broad CWE-shaped hallucinations. The reusable scaffold is intentionally small: pick a thin slice, build a one-page threat model, identify invariants and entrypoints, then ask for call chains and tests that prove exploitability.
 
 - [Cykor — Building an AI-Based Vulnerability Detection Workflow](https://blog.cykor.kr/2026/06/Building-an-AI-Based-Vulnerability-Detection-Workflow)
-  Practical note on the gray zone between code patterns and real vulnerabilities. Useful for designing workflows that distinguish policy decisions from genuinely exploitable behavior.
+  - Learn the three-stage workflow that emerged from practice: preprocess the target, generate vulnerability hypotheses, and validate candidates with separated responsibilities. The subtle lesson is policy context: many findings live in a gray zone, so the agent must know service intent and responsibility boundaries before calling a code pattern exploitable.
 
 ## Projects
 
 - [Anthropic — Defending Code Reference Harness](https://github.com/anthropics/defending-code-reference-harness)
-  Reference harness for agentic vulnerability discovery. Includes a staged workflow, validation-oriented instructions, report generation, and reusable Claude Code skills.
+  - Learn a concrete reference implementation of recon → find → verify → report → patch for C/C++ memory bugs with Docker, ASAN, gVisor isolation, and parallel agents. The reusable parts are the stage contracts, sandbox refusal rules, fresh-container verification, dedupe, exploitability reporting, and patch validation against both the original PoC and renewed search.
 
 - [Anthropic Reference Harness — Claude Skills](https://github.com/anthropics/defending-code-reference-harness/tree/main/.claude/skills)
-  Reusable skills from Anthropic's reference harness. Good examples of encoding security tasks as repeatable agent capabilities.
+  - Learn how to encode security work as reusable agent skills: quickstart, threat-model, vuln-scan, triage, patch, and customize. These are useful templates for turning expert review habits into repeatable commands with inputs, artifacts, safety boundaries, and expected outputs rather than relying on ad hoc chat instructions.
 
 - [Cloudflare — security-audit-skill](https://github.com/cloudflare/security-audit-skill)
-  Coding-agent skill that orchestrates parallel agents through a six-phase pipeline. Notable for adversarial validation — separate agents try to disprove each finding — and cumulative multi-run findings.
+  - Learn a compact six-phase coding-agent audit skill: parallel recon, multi-angle hunt, adversarial validation, dedupe, cumulative findings, and machine-readable outputs. The most important reusable rule is that the validator must be separate from the finder and should try to disprove exploitability before a finding is allowed to survive.
 
 - [Visa — Visa Vulnerability Agentic Harness](https://github.com/visa/visa-vulnerability-agentic-harness)
-  Visa's open-source agentic SAST harness with threat modeling, multi-lens analysis, adversarial verification, structured findings, remediation, and validation stages.
+  - Learn a vendor-neutral SAST harness with threat modeling, multi-lens research, deterministic voting, adversarial verification, structured Markdown/SARIF findings, remediation, and validation. It is especially useful for enterprise systems because it optimizes the full lifecycle from AI-discovered exploitability to a validated fix, not just candidate generation.
 
 - [berabuddies — AgentFlow](https://github.com/berabuddies/agentflow)
-  Python framework for orchestrating multiple coding agents as dependency graphs with parallel fanout and iterative loops. Kept as the implementation behind the “Synthesizing Multi-Agent Harnesses for Vulnerability Discovery” paper, which reports previously unknown Chrome zero-days rather than a generic web2/pentest workflow.
+  - Learn how to express agentic bug-hunting systems as typed graphs: fanout over files or hypotheses, merge findings, loop on reviewer failure, run mixed models, and evolve agents from traces. This is the implementation pattern to study when a vulnerability workflow needs thousands of bounded agents, dependency edges, shared scratchboards, and measurable stop conditions.
 
 - [Trail of Bits — Buttercup](https://github.com/trailofbits/buttercup)
-  Open-source standalone version of Trail of Bits' second-place AIxCC CRS. Useful for studying a reproducible end-to-end pipeline around AI-augmented input generation, contextual analysis, PoV handling, multi-agent patching, and validation on OSS-Fuzz-style targets.
+  - Learn a runnable AIxCC-derived vulnerability-finding and patching pipeline for OSS-Fuzz-like targets with task monitoring, fuzzing, PoV handling, and patch generation. Use it to study how traditional dynamic testing and LLM agents can share state, avoid duplicate work, and produce fixes that are validated rather than merely suggested.
 
 - [AISLE — nano-analyzer](https://github.com/weareaisle/nano-analyzer)
-  Minimal single-file LLM-powered scanner that runs context generation, vulnerability scanning, and skeptical multi-round triage over C/C++ code. Useful as a small, inspectable harness for coverage-first native-code bug hunting.
+  - Learn the smallest useful version of an LLM-powered native-code scanner: per-file context generation, vulnerability scan, skeptical triage, and final arbitration. It is a good baseline for severe-bug systems because every extra agentic feature can be compared against a cheap coverage-first pipeline that already finds real candidates.
 
 - [PlamenTSV — plamen](https://github.com/PlamenTSV/plamen)
-  Autonomous Web3 security-audit orchestrator for Claude Code and Codex-style workers. It emphasizes mechanical phases, worker artifacts, PoC verification, resumability, and surfaced obligations instead of trusting agent completion claims.
+  - Learn the runnable version of the BEAST idea: 18–100 Claude/Codex agents across 8 phases producing audit reports with verified PoC exploits for smart contracts and L1 node-client infrastructure. The useful engineering details are PTY-supervised workers, disk artifacts as truth, resumable checkpoints, PoC pass/fail markers, and surfaced obligations.
 
 ## Papers
+
 - [Synthesizing Multi-Agent Harnesses for Vulnerability Discovery](https://arxiv.org/abs/2604.20801)
-  Research on automatically synthesizing multi-agent harnesses via a typed DSL over agent roles, topology, prompts, and tools, reading runtime feedback to propose harness edits. Kept because it reports ten previously unknown zero-days in Google Chrome and has a corresponding implementation in AgentFlow.
+  - Learn how to optimize the harness itself, not just the prompts: roles, tools, communication topology, retries, and coordination protocol are modeled in a typed graph DSL. The key lesson is that runtime feedback from the target can diagnose which harness component failed, enabling systematic rewrites that reportedly found previously unknown Chrome zero-days.
 
 - [Knowdit — Agentic Smart Contract Vulnerability Detection with Auditing Knowledge Summarization](https://arxiv.org/html/2603.26270v2)
-  Knowledge-driven agentic smart-contract auditing loop: map DeFi semantics and historical vulnerability patterns, generate specifications, synthesize PoCs, execute them, and reflect on findings. Strong fit because it reports confirmed real-world high/medium vulnerabilities and concrete proofs of exploitation.
+  - Learn knowledge-driven smart-contract auditing from the paper: build an auditing knowledge graph from human reports, map DeFi semantics and bug patterns onto a target, then iterate specification generation, PoC synthesis, execution, and reflection. Its reported 9 high- and 36 medium-severity unknown findings show why domain knowledge plus executable proof beats generic Solidity smell scanning.
 
 - [AI Agent Smart Contract Exploit Generation](https://arxiv.org/html/2507.05558v2)
-  Describes A1, an agentic exploit-generation system that gathers contract context, generates exploit strategies, tests Solidity PoCs against forked blockchain state, and refines from execution feedback.
+  - Learn A1's execution-driven exploit model: give the LLM domain tools, generate strategies, run Solidity PoCs against forked chain state, and refine from execution feedback. The paper's key discipline is reporting only concretely validated profitable PoC exploits, with a 62.96% VERITE success rate—useful as a hard standard for Web3 agent outputs.
