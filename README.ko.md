@@ -18,14 +18,14 @@
 
 ## 이 리스트에 대하여
 
-**포함 기준.** 자료는 아래 중 하나 이상을 보여주어야 합니다.
+**포함 기준.** 자료는 agentic bug-hunting system에 필요한 실용적인 구성요소를 하나 이상 제공해야 합니다.
 
-- LLM 또는 에이전트가 직접 관여하는 구체적인 취약점 발견 워크플로.
-- 재사용 가능한 하네스, 기본 틀, 에이전트 스킬, 에이전트 아키텍처, 검증 루프.
-- 에이전트가 실제 취약점을 찾거나, 검증하거나, 재현하거나, 보고하는 데 도움을 준 사례 연구.
-- LLM이 발견, 가설 생성, 검증, 명세 추론에 직접 참여하는 연구 방법.
+- **발견 워크플로:** LLM 또는 에이전트가 대상을 탐색하고, 취약점 가설을 만들고, 공격자가 제어하는 경로를 추론하거나, 누락된 명세를 유추하는 방법.
+- **하네스와 검증 설계:** 재사용 가능한 scaffold, 에이전트 역할, 스킬, 도구 루프, 상태 관리, coverage tracking, PoC 실행, verifier/critic gate.
+- **실제 취약점 증거:** LLM 또는 에이전트가 실제 취약점을 찾고, 검증하고, 재현하고, exploit하고, 보고하거나, 패치하는 데 도움을 준 사례.
+- **논리 버그 방법론:** 깨진 불변식, 위험한 상태 전이, 신뢰 경계 오류, 프로토콜 또는 컨트랙트 동작 불일치, 고정 시그니처만으로 잡기 어려운 공격 경로를 찾는 방법.
 
-각 항목은 단순 요약이 아니라, “심각하고 재현 가능한 취약점을 찾는 에이전트 기반 버그 헌팅 시스템에 무엇을 가져올 수 있는가”를 짧게 정리한 학습 노트입니다.
+각 항목은 단순 요약이 아니라, “AI agent로 심각하고 재현 가능한 논리 버그를 자동으로 찾는 구조에 무엇을 가져올 수 있는가”를 짧게 정리한 학습 노트입니다.
 
 ## 아티클
 - [2026-06-30 — Yue Xue — AI Auditing Methodology: Agent Self-Evolution, Drift, Reverse Evolution and Solutions](https://www.linkedin.com/pulse/ai-auditing-methodology-agent-self-evolution-drift-reverse-yue-xue-uqsse/)
@@ -36,6 +36,9 @@
 
 - [2026-06-25 — pkqs91 / Octane Security — Codex로 3개월 만에 $200k를 번 방법](https://x.com/pkqs91/status/2070157806104457395)
   - X 아티클이 설명하는 실제 버그바운티 흐름을 배울 수 있습니다. intake 단계에서는 범위, 심각도 규칙, 제외 조건, 문서, 코드를 로컬 분석 묶음으로 바꾸고, hunting 단계에서는 넓게 탐색하며, verification 단계에서는 범위 밖 후보, 방어 로직 때문에 불가능한 경로, 영향이 없는 실마리를 제거합니다. 핵심 규칙은 “넓게 탐색하고, 깊게 악용 가능성을 검증하라”이며, 영향 필터를 통과한 소수만 수동 재현해야 합니다.
+
+- [2026-06-24 — Asymmetric Research — Under the Hood: Engineering Commonware Fuzzing](https://blog.asymmetric.re/under-the-hood/)
+  - 심각한 버그 헌팅에서 fuzzing을 지속적인 검증 인프라로 운영하는 법을 배울 수 있습니다. deterministic runtime, controlled randomness, 검토 가능한 fuzz target, 재현 가능한 crash, regression 승격이 핵심입니다. Commonware는 일반적인 Web3 앱 플랫폼이라기보다 blockchain, consensus, storage, networking, cryptographic primitive로 구성된 Rust stack이며, 재사용할 교훈은 LLM이 만든 가설도 deterministic harness를 통과해야 finding이 된다는 점입니다.
 
 - [2026-06-23 — Zero Cool Labs — Symmetry Sniper](https://x.com/ZeroCool_AI/status/2069443859327705497)
   - X 아티클의 좁은 범위 전문 스킬 패턴을 배울 수 있습니다. 문서, 이름, 이벤트, 인터페이스, 테스트에서 의도된 대칭 관계를 먼저 확인한 뒤, 상태 변경, 자산 이동, 권한 검사, 반올림, 0 값, 경계값 처리를 비교합니다. 보고 가능한 취약점은 불변식 위반, 권한 불일치, 수수료/반올림 비대칭, batch 우회처럼 측정 가능한 영향만 허용하므로 잡음이 적은 스킬 설계에 좋습니다.
@@ -49,7 +52,7 @@
 - [2026-06-01 — Night-Wolf — Closed Source Software에서의 AI-Powered Bug Hunting](https://blogs.night-wolf.io/ai-powered-bug-hunting-in-closed-source-software)
   - 소스코드가 없을 때 에이전트 기반 헌팅을 바꾸는 방법을 배울 수 있습니다. 디컴파일하고, 디컴파일러용 스킬을 만들고, 여러 관점의 검토를 돌리고, 불가능한 전제조건을 걸러내며, 블랙박스 검증으로 후보를 확인합니다. 리버싱 산출물은 불완전한 증거이므로 실제 바이너리에서 주장한 공격 경로가 존재한다는 런타임 확인이 필요합니다.
 
-- [2026-06-01 — Cykor — AI 기반 취약점 탐지 워크플로 만들기](https://blog.cykor.kr/2026/06/Building-an-AI-Based-Vulnerability-Detection-Workflow)
+- [2026-06-01 — se1en — AI 기반 취약점 탐지 워크플로우 구축기](https://se1en.tistory.com/15)
   - 실전에서 나온 세 단계 흐름을 배울 수 있습니다. 대상 전처리, 취약점 가설 생성, 후보 검증을 분리합니다. 미묘한 교훈은 정책 맥락입니다. 많은 취약점 후보가 회색지대에 있기 때문에, 에이전트는 코드 패턴을 곧바로 악용 가능하다고 부르기 전에 서비스 의도와 책임 경계를 알아야 합니다.
 
 - [2026-05-27 — Night-Wolf — Reasoning-First 취약점 연구로 오픈소스 프로젝트에서 여러 버그 찾기](https://blogs.night-wolf.io/reasoning-first-vulnerability-research-that-found-multiples-bugs-in-open-source-project)
@@ -61,11 +64,17 @@
 - [2026-05-12 — Microsoft — MDASH](https://www.microsoft.com/en-us/security/blog/2026/05/12/defense-at-ai-speed-microsofts-new-multi-model-agentic-security-system-tops-leading-industry-benchmark/)
   - MDASH의 구체적인 단계를 배울 수 있습니다. 언어별 index와 threat model을 준비하고, 감사 담당 에이전트가 스캔하며, 토론 담당 에이전트가 도달 가능성과 악용 가능성을 검토하고, 의미상 중복을 제거한 뒤, ASan 사례 같은 동적 트리거로 증명합니다. 핵심은 한 에이전트가 모든 일을 하는 것이 아니라, 100개 이상의 전문 에이전트가 반박 실패와 증거 산출물을 통해 신뢰도를 높인다는 점입니다.
 
+- [2026-05-04 — Asymmetric Research — Introducing Crucible: Solana를 위한 Invariant Fuzzing Framework](https://blog.asymmetric.re/introducing-crucible-an-invariant-fuzzing-framework-for-solana/)
+  - 논리 버그를 위한 sequence-aware invariant harness 설계를 배울 수 있습니다. 상태를 가진 Solana action을 모델링하고, typed instruction sequence를 변형하며, stake weight가 backing lamports를 넘지 않아야 한다는 식의 작은 속성을 검증합니다. LLM 기반 헌팅에서는 의미론적 의심을 invariant로 바꾸고, 하네스가 그 invariant를 깨는 multi-step witness를 찾게 하는 목표 형태로 특히 좋습니다.
+
 - [2026-04-29 — Xint — Copy Fail: 주요 Linux 배포판에서 732바이트로 root 획득](https://xint.io/blog/copy-fail-linux-distributions)
   - 날카로운 불변식 하나와 에이전트식 탐색 루프가 치명적인 커널 버그를 드러내는 방식을 배울 수 있습니다. “page cache에 기반한 데이터가 writable crypto scatterlist에 들어가면 안 된다”는 구체적인 의심을 주고, 에이전트가 관련 조합 공간을 변종 탐색하게 한 뒤, 얻어진 공격 능력과 재현 가능한 공격 경로로 심각도를 판단하는 패턴이 핵심입니다.
 
 - [2026-04-14 — AISLE — System Over Model: Jagged Frontier에서의 Zero-Day 발견](https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier)
   - 더 강한 모델 하나보다 넓은 coverage, 저렴한 병렬 처리, 회의적인 검토가 더 효과적일 수 있음을 배울 수 있습니다. 파일별 보안 문맥을 만들고, 함수 단위로 스캔한 뒤, 여러 차례 검토로 후보를 반박해봅니다. 예산이 제한된 심각한 취약점 헌팅에서는 먼저 더 많은 코드를 보게 하고, 반박을 견딘 후보에만 깊은 추론을 쓰는 편이 좋습니다.
+
+- [2026-04-09 — Asymmetric Research — Understanding Agents: Coding Agent를 위한 Code Coverage](https://blog.asymmetric.re/understanding-agents-code-coverage-for-coding-agents/)
+  - coding agent의 관측성을 배울 수 있습니다. 세션 trace를 분석해 에이전트가 실제로 읽은 line range와 의도를 표시하고, prompt, model, reasoning effort를 구체적인 code coverage로 비교합니다. 버그 헌팅에서는 긴 대화 기록을 의미 있는 coverage로 착각하지 말고, 에이전트가 보지 않은 blind spot을 다시 탐색하게 만드는 산출물로 쓸 수 있습니다.
 
 - [2026-04-08 — Plamen Tsanev — BEAST post](https://x.com/p_tsanev/status/2041880807032119670)
   - “몇 개의 에이전트가 전체 코드베이스를 읽게 하는” 첫 실험이 왜 실패했고, Plamen이 왜 전문화된 재귀 구조로 이동했는지 배울 수 있습니다. 글은 정찰, 초기 설정, 넓은 탐색, 인벤토리/의미 분석, 깊은 분석, 체인 분석, PoC, 보고서의 8단계 흐름을 제시합니다. 인간의 피로 때문에 놓치기 쉬운 복합 logic bug를 찾는 데 특히 유용합니다.
@@ -88,6 +97,9 @@
 - [2026-03-15 — Yue Xue — AI Auditing Methodology, Part I](https://x.com/xy9301/status/2033186266649640980)
   - X 아티클의 핵심 주장을 배울 수 있습니다. AI 보안은 프레임워크 중심 파이프라인에서 코딩 에이전트 중심 흐름으로 이동하고 있으며, 먼저 인간의 감사 과정을 재현한 뒤 자동화하는 방향으로 바뀌고 있습니다. 진지한 헌터를 만들려면 모든 것을 무거운 정적 프레임워크로 전처리하기보다, 풍부한 프로젝트 자료 위에서 유연하게 탐색을 시작하는 편이 좋습니다.
 
+- [2026-03-12 — Asymmetric Research — 실제로는 취약점이 아닌 Solana 오탐 사례들](https://blog.asymmetric.re/solana-vulnerabilities-that-arent-unpacking-common-misreports/)
+  - LLM 감사자를 위한 Solana 특화 false-positive guardrail을 배울 수 있습니다. 널리 알려진 “취약점” 중 상당수는 오래되었거나 잘못 전파된 내용이므로, 에이전트는 runtime version, framework behavior, exploit precondition, 실제 impact를 확인해야 합니다. 논리 버그 헌터를 만들 때 오래된 보안 지식은 그럴듯한 추론처럼 보일 수 있으므로, 하네스가 환경에 맞는 검증을 강제해야 합니다.
+
 - [2026-03-09 — Devansh — Needle in the Haystack: 취약점 연구를 위한 LLM](https://devansh.bearblog.dev/needle-in-the-haystack/)
   - 막연한 “버그 찾아줘”식 프롬프트가 왜 실패하는지 배울 수 있습니다. threat model, 공격자 능력, 신뢰 경계, 과거 CVE 맥락이 없으면 모델은 CWE 이름만 닮은 환각성 지적을 많이 만듭니다. 재사용할 기본 절차는 작게 시작하는 것입니다. 얇은 범위를 고르고, 한 페이지 threat model을 만들고, 불변식과 진입점을 찾은 뒤 악용 가능성을 증명하는 call chain과 테스트를 요청합니다.
 
@@ -97,13 +109,16 @@
 - [2025-12-01 — Anthropic — AI 에이전트가 $4.6M 규모의 스마트 컨트랙트 익스플로잇을 발견](https://www.anthropic.com/research/smart-contracts)
   - 도메인 전용 실행 환경이 에이전트의 품질을 어떻게 바꾸는지 배울 수 있습니다. MCP로 Foundry/anvil/cast 도구를 제공하고, 특정 블록의 체인 상태를 fork해 재현 가능한 테스트 환경을 만들며, 실제 익스플로잇 성공을 명확한 성공 기준으로 삼습니다. Web3 헌팅에서는 경제적 영향이 있는 PoC만 보고하고, 실패한 트랜잭션은 다음 시도를 개선하는 피드백으로 써야 합니다.
 
+- [2025-11-04 — Seokchan Yoon — $5짜리 프롬프트로 $2,418짜리 취약점 찾은 썰](https://new-blog.ch4n3.kr/llm-found-security-issues-from-django-ko/)
+  - 완전 자율 하네스가 아니라 가벼운 LLM 후보 채굴 baseline을 배울 수 있습니다. 취약점 종류를 Django DoS로 좁히고, 1-day CVE 예시와 정책 맥락을 프롬프트에 넣고, 관련 소스 파일을 XML로 묶어 토큰 예산 안에서 전달한 뒤, false positive가 많은 후보를 모아 triage합니다. 저비용 넓은 탐색이 놓친 패턴을 드러낼 수 있지만, 진지한 제보에는 도달 가능성, 영향, 정책 검증이 필요하다는 점이 핵심입니다.
+
 - [2025-09-04 — Team Atlanta — Harness에서 Vulnerability까지: 코드 이해와 버그 발견을 위한 AI 에이전트](https://team-atlanta.github.io/blog/post-mlla-disc-agents/)
   - AIxCC 규모의 에이전트가 거대한 코드베이스를 실제 공격 실마리로 좁히는 방식을 배울 수 있습니다. harness entrypoint 식별, 정확한 함수 검색, 재귀적 call graph 구성, 오염된 인자 추적, 위험 sink 표시가 핵심입니다. 익스플로잇 생성은 공격자가 제어하는 데이터가 보안상 중요한 연산에 도달한다는 점이 확인된 뒤에 시작해야 합니다.
 
 - [2025-08-08 — Trail of Bits — Buttercup 오픈소스 공개](https://blog.trailofbits.com/2025/08/08/buttercup-is-now-open-source/)
   - 상위권 AIxCC 시스템의 전체 취약점 발견 구조를 배울 수 있습니다. AI 보강 입력 생성, 문맥 기반 정적 분석, PoV 중복 제거, 패치 생성, 검증이 핵심입니다. 자율 헌터를 만들 때는 fuzzing, LLM 추론, 중복 관리, 수정 루프를 한 에이전트의 결론에만 의존하지 않고 조율하는 구조로 참고할 수 있습니다.
 
-- [2025-08-08 — Xint — 효과적인 LLM 에이전트 만들기 | AI Cyber Challenge](https://xint.io/blog/building-effective-llm-agents-ai-cyber-challenge-165236)
+- [2025-08-08 — Theori / Xint — AI 해커를 만들며 배운 것](https://theori.io/ko/blog/building-effective-llm-agents-63446)
   - Theori의 실전 에이전트 설계 원칙을 배울 수 있습니다. 사람이 휴리스틱으로 푸는 작업에 에이전트를 쓰고, 취약점 탐지, PoV 생성, 패치 작성, 원인 분석을 좁은 역할로 나누며, 각 역할에 필요한 도구만 제공합니다. 재사용할 만한 세부 요소는 구조화된 출력, 종료 전용 도구, 필수 도구 호출, 검증 피드백, 진행 상황 개입입니다.
 
 - [2025-07-03 — Gustavo Grieco — Quimera 소개](https://gustavo-grieco.github.io/blog/introducing-quimera/)

@@ -18,14 +18,14 @@ Last reviewed: 2026-07-09
 
 ## About this list
 
-**What to include.** A resource should show at least one of the following:
+**What to include.** A resource should contribute at least one practical building block for an agentic bug-hunting system:
 
-- A concrete LLM- or agent-driven vulnerability discovery workflow.
-- A reusable harness, scaffold, agent skill, agent architecture, or validation loop.
-- A case study where an agent helped find, validate, reproduce, or report real vulnerabilities.
-- A research method where the LLM directly participates in discovery, hypothesis generation, validation, or specification inference.
+- **Discovery workflows:** how LLMs or agents explore a target, generate vulnerability hypotheses, reason about attacker-controlled paths, or infer missing specifications.
+- **Harness and validation design:** reusable scaffolds, agent roles, skills, tool loops, state management, coverage tracking, PoC execution, or verifier/critic gates.
+- **Real vulnerability evidence:** case studies where LLMs or agents helped find, validate, reproduce, exploit, report, or patch real vulnerabilities.
+- **Logical-bug methods:** techniques for finding violated invariants, unsafe state transitions, trust-boundary mistakes, protocol or contract misbehavior, and exploit paths that require reasoning beyond fixed signatures.
 
-Each entry is written as a short learning note: what to copy into an agentic bug-hunting system that is trying to find serious, reproducible vulnerabilities rather than generic security observations.
+Each entry is written as a short learning note: what to copy into an agentic bug-hunting system that is trying to automatically find serious, reproducible vulnerabilities, with a particular focus on logical bugs rather than generic security observations.
 
 ## Articles
 - [2026-06-30 — Yue Xue — AI Auditing Methodology: Agent Self-Evolution, Drift, Reverse Evolution and Solutions](https://www.linkedin.com/pulse/ai-auditing-methodology-agent-self-evolution-drift-reverse-yue-xue-uqsse/)
@@ -36,6 +36,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 
 - [2026-06-25 — pkqs91 / Octane Security — How I Made $200k With Codex in 3 Months](https://x.com/pkqs91/status/2070157806104457395)
   - Learn the actual bug-bounty loop described in the X Article: intake turns scope, severity rules, exclusions, docs, and code into a local bundle; hunting explores wide; verification kills out-of-scope, guarded, or no-impact leads. The durable rule is “explore wide, exploit deep” and manually reproduce only the few candidates that survive impact filtering.
+
+- [2026-06-24 — Asymmetric Research — Under the Hood: Engineering Commonware Fuzzing](https://blog.asymmetric.re/under-the-hood/)
+  - Learn how to treat fuzzing as continuous validation infrastructure for serious bug hunting: deterministic runtime, controlled randomness, reviewable fuzz targets, reproducible crashes, and promoted regressions. Commonware is a Rust stack of blockchain, consensus, storage, networking, and cryptographic primitives rather than a generic Web3 app platform; the reusable lesson is to make any LLM-generated hypothesis graduate through a deterministic harness before it becomes a finding.
 
 - [2026-06-23 — Zero Cool Labs — Symmetry Sniper](https://x.com/ZeroCool_AI/status/2069443859327705497)
   - Learn the narrow-skill pattern from the X Article: establish an intended mirror from docs, names, events, interfaces, or tests, then compare writes, asset movement, authorization, rounding, zero cases, and bounds. It reports only measurable impacts such as invariant breaks, auth mismatches, fee/rounding asymmetry, or batch bypasses—good discipline for high-signal skills.
@@ -61,11 +64,17 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-05-12 — Microsoft — MDASH](https://www.microsoft.com/en-us/security/blog/2026/05/12/defense-at-ai-speed-microsofts-new-multi-model-agentic-security-system-tops-leading-industry-benchmark/)
   - Learn MDASH's concrete stages: prepare language-aware indices and threat models, scan with auditor agents, validate with debaters, dedupe semantic duplicates, and prove bugs with dynamic triggers such as ASan cases. The key lesson is not one agent but 100+ specialized agents whose disagreement, failed refutation, and proof artifacts raise confidence.
 
+- [2026-05-04 — Asymmetric Research — Introducing Crucible: An Invariant Fuzzing Framework for Solana](https://blog.asymmetric.re/introducing-crucible-an-invariant-fuzzing-framework-for-solana/)
+  - Learn sequence-aware invariant harness design for logical bugs: model stateful Solana actions, mutate typed instruction sequences, and assert compact properties such as stake weight never exceeding backing lamports. For LLM-driven hunting, this is a strong target shape: convert a semantic suspicion into an invariant, then let the harness search for the multi-step witness that violates it.
+
 - [2026-04-29 — Xint — Copy Fail: 732 Bytes to Root on Every Major Linux Distribution](https://xint.io/blog/copy-fail-linux-distributions)
   - Learn how a sharp human invariant plus an agentic search loop can expose a catastrophic kernel bug: page-cache-backed data should not enter writable crypto scatterlists. The reusable pattern is to seed the agent with one precise cross-subsystem suspicion, let it variant-mine the combinatorial surface, then judge severity by the resulting primitive and reproducible exploit path.
 
 - [2026-04-14 — AISLE — System Over Model: Zero-Day Discovery at the Jagged Frontier](https://aisle.com/blog/system-over-model-zero-day-discovery-at-the-jagged-frontier)
   - Learn why coverage, cheap parallelism, and skeptical triage can beat a single brilliant pass: generate per-file security context, scan function by function, then challenge findings over multiple rounds. This is a strong design for budget-aware serious hunting because it spends tokens seeing more code first, then escalates reasoning only on candidates that survive adversarial review.
+
+- [2026-04-09 — Asymmetric Research — Understanding Agents: Code Coverage for Coding Agents](https://blog.asymmetric.re/understanding-agents-code-coverage-for-coding-agents/)
+  - Learn observability for coding agents: parse session traces to map which line ranges the agent actually read and with what intent, then compare prompts, models, and reasoning effort by concrete code coverage. For bug hunting, this turns agent attention into an artifact: rerun agents on blind spots instead of assuming a long transcript means meaningful coverage.
 
 - [2026-04-08 — Plamen Tsanev — BEAST post](https://x.com/p_tsanev/status/2041880807032119670)
   - Learn why the first “few agents over the whole codebase” experiment failed, and why Plamen moved to specialized recursion. The article lays out an 8-phase flow—recon, instantiation, breadth, inventory/semantic analysis, depth, chain analysis, PoC, and report—useful for finding compound logic bugs that fatigue-prone humans miss.
@@ -88,6 +97,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-03-15 — Yue Xue — AI Auditing Methodology, Part I](https://x.com/xy9301/status/2033186266649640980)
   - Learn the X Article's core thesis: AI security is shifting from framework-driven pipelines to coding-agent-driven workflows that first reproduce the human audit process and then automate it. For a serious hunter, start with flexible agent exploration over rich project material instead of over-preprocessing everything into a brittle static framework.
 
+- [2026-03-12 — Asymmetric Research — Solana Vulnerabilities That Aren’t: Unpacking Common Misreports](https://blog.asymmetric.re/solana-vulnerabilities-that-arent-unpacking-common-misreports/)
+  - Learn a Solana-specific false-positive guardrail for LLM auditors: many popular “vulnerabilities” are outdated or misreported, so the agent must check runtime version, framework behavior, exploit preconditions, and actual impact before repeating folklore. This is useful when building logical-bug hunters because stale security knowledge can look like reasoning unless the harness forces environment-aware verification.
+
 - [2026-03-09 — Devansh — Needle in the Haystack: LLMs for Vulnerability Research](https://devansh.bearblog.dev/needle-in-the-haystack/)
   - Learn why vague "find bugs" prompts fail: without threat model, attacker capability, trust boundaries, and prior CVE context, models produce broad CWE-shaped hallucinations. The reusable scaffold is intentionally small: pick a thin slice, build a one-page threat model, identify invariants and entrypoints, then ask for call chains and tests that prove exploitability.
 
@@ -97,13 +109,16 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2025-12-01 — Anthropic — AI agents find $4.6M in blockchain smart contract exploits](https://www.anthropic.com/research/smart-contracts)
   - Learn how a domain sandbox changes agent behavior: MCP-exposed Foundry/anvil/cast tools, forked-chain state, executable tests, and a hard success signal based on a working exploit. For serious Web3 hunting, the loop should report only concrete, economically meaningful PoCs and treat failed transactions as feedback for the next exploit strategy.
 
+- [2025-11-04 — Seokchan Yoon — How I Found a $2,418 Vulnerabilities with a $5 Prompt](https://new-blog.ch4n3.kr/llm-found-security-issues-from-django-en/)
+  - Learn a lightweight LLM candidate-mining baseline rather than a fully autonomous harness: narrow the bug class to Django denial-of-service issues, seed the prompt with 1-day CVE examples and policy context, XML-bundle related source files under a token budget, then collect many false-positive-heavy leads for triage. The useful lesson is that cheap broad mining can surface missed patterns, but serious reports still need reachability, impact, and policy validation.
+
 - [2025-09-04 — Team Atlanta — From Harness to Vulnerability: AI Agents for Code Comprehension and Bug Discovery](https://team-atlanta.github.io/blog/post-mlla-disc-agents/)
   - Learn how AIxCC-scale agents shrink a huge codebase into exploitable leads: identify harness entrypoints, retrieve exact functions, recursively build call graphs, track tainted arguments, and annotate sinks. This is a template for severe bug hunting because exploit generation starts only after the system has proven attacker-controlled data can reach security-relevant operations.
 
 - [2025-08-08 — Trail of Bits — Buttercup is now open-source!](https://blog.trailofbits.com/2025/08/08/buttercup-is-now-open-source/)
   - Learn the end-to-end vulnerability-discovery architecture behind a top AIxCC system: AI-augmented input generation, contextual static analysis, PoV deduplication, patch generation, and validation. For an autonomous hunter, Buttercup is most useful as a reference for coordinating fuzzing, LLM reasoning, duplicate control, and repair loops without trusting a single agent's conclusion.
 
-- [2025-08-08 — Xint — Building Effective LLM Agents | AI Cyber Challenge](https://xint.io/blog/building-effective-llm-agents-ai-cyber-challenge-165236)
+- [2025-08-08 — Theori / Xint — Building Effective LLM Agents | AI Cyber Challenge](https://theori.io/blog/building-effective-llm-agents-63446)
   - Learn Theori's practical agent-design rules: use agents for tasks humans solve heuristically, decompose vulnerability detection, PoV generation, patching, and root-cause analysis, and constrain each role with curated tools. The source-backed details to copy are structured outputs, a dedicated terminate tool, required tool calls, validation feedback, and progress interventions.
 
 - [2025-07-03 — Gustavo Grieco — Introducing Quimera](https://gustavo-grieco.github.io/blog/introducing-quimera/)
