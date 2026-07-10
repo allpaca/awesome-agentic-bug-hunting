@@ -6,7 +6,7 @@
 
 이 리스트는 실전형 에이전트 기반 버그 헌팅에 초점을 둡니다. 소스코드나 바이너리 탐색, 취약점 가설 생성, 검증, PoC 작성, 분류/검토, 재사용 가능한 하네스 설계를 다룹니다.
 
-마지막 검토일: 2026-07-09
+마지막 검토일: 2026-07-10
 
 ## 목차
 
@@ -65,7 +65,7 @@
   - MDASH의 구체적인 단계를 배울 수 있습니다. 언어별 index와 threat model을 준비하고, 감사 담당 에이전트가 스캔하며, 토론 담당 에이전트가 도달 가능성과 악용 가능성을 검토하고, 의미상 중복을 제거한 뒤, ASan 사례 같은 동적 트리거로 증명합니다. 핵심은 한 에이전트가 모든 일을 하는 것이 아니라, 100개 이상의 전문 에이전트가 반박 실패와 증거 산출물을 통해 신뢰도를 높인다는 점입니다.
 
 - [2026-05-04 — Asymmetric Research — Introducing Crucible: Solana를 위한 Invariant Fuzzing Framework](https://blog.asymmetric.re/introducing-crucible-an-invariant-fuzzing-framework-for-solana/)
-  - 논리 버그를 위한 sequence-aware invariant harness 설계를 배울 수 있습니다. 상태를 가진 Solana action을 모델링하고, typed instruction sequence를 변형하며, stake weight가 backing lamports를 넘지 않아야 한다는 식의 작은 속성을 검증합니다. LLM 기반 헌팅에서는 의미론적 의심을 invariant로 바꾸고, 하네스가 그 invariant를 깨는 multi-step witness를 찾게 하는 목표 형태로 특히 좋습니다.
+  - Crucible 자체는 agentic system이 아니지만, 논리 버그 에이전트에 정밀한 의미론적 목표를 주는 방법을 배울 수 있습니다. 도메인 추론을 실행 가능한 invariant로 만들고, 상태를 가진 Solana action을 모델링하고, typed instruction sequence에서 위반 witness를 탐색합니다. delegation weight가 backing lamports를 초과한 phantom-stake 사례는 LLM이 만든 경제·합의 invariant가 일반적인 퍼징이 아니라 다단계 검증을 이끄는 방식을 보여줍니다.
 
 - [2026-04-29 — Xint — Copy Fail: 주요 Linux 배포판에서 732바이트로 root 획득](https://xint.io/blog/copy-fail-linux-distributions)
   - 날카로운 불변식 하나와 에이전트식 탐색 루프가 치명적인 커널 버그를 드러내는 방식을 배울 수 있습니다. “page cache에 기반한 데이터가 writable crypto scatterlist에 들어가면 안 된다”는 구체적인 의심을 주고, 에이전트가 관련 조합 공간을 변종 탐색하게 한 뒤, 얻어진 공격 능력과 재현 가능한 공격 경로로 심각도를 판단하는 패턴이 핵심입니다.
@@ -140,6 +140,12 @@
 - [2026-06-20 — Revelio: Repository-Scale Codebase를 위한 비용 효율적 Agentic Memory Safety 취약점 탐지](https://arxiv.org/abs/2606.22263)
   - 저장소 단위 에이전트를 위한 hallucination 방지 검증 게이트를 배울 수 있습니다. 저렴한 LLM과 가벼운 정적 분석으로 가설을 만들고 순위를 매기지만, 최종 finding은 실행 가능한 Proof-of-Vulnerability가 deterministic sanitizer에서 재현될 때만 살아남습니다. 논리 버그보다는 memory safety 중심이지만, generate-rank-prove 계약은 심각한 버그 헌팅 시스템 전반에 적용할 만한 강한 패턴입니다.
 
+- [2026-06-17 — Code-Augur: Specification Inference를 이용한 Agentic Vulnerability Detection](https://arxiv.org/abs/2606.18619)
+  - 에이전트가 코드를 안전하다고 판단할 때 사용한 가정을 in-source invariant로 외부화하고, 런타임에서 이를 반증하고 개선하는 specification-first loop를 배울 수 있습니다. 구현은 반증 수단으로 guided fuzzing을 사용하지만, 논리 버그 헌팅에 옮길 핵심은 에이전트의 안전성 판단을 그대로 믿지 않고 암묵적 추론을 실행 가능한 의무로 바꾸는 것입니다.
+
+- [2026-05-28 — Agora: LLM Agent를 이용한 Production-Level Consensus Protocol 자율 버그 탐지](https://arxiv.org/abs/2605.29910)
+  - 공개된 사례 중 agentic consensus logic bug hunting에 가장 가까운 workflow를 배울 수 있습니다. 도메인 인식 에이전트가 프로토콜 상태를 유지하고, fault model 제약을 적용하고, 공격 시나리오를 합성하며, global safety invariant에 대해 가설을 반복 검증합니다. Raft, EPaxos, HotStuff, BullShark에서 보고한 15개의 알려지지 않았던 protocol-level logic bug는 고립된 코드 리뷰보다 상태 기반 시나리오 추론과 hypothesis-driven testing이 중요한 이유를 보여줍니다.
+
 - [2026-05-12 — VulTriage: LLM 기반 취약점 탐지를 위한 Triple-Path Context Augmentation](https://arxiv.org/abs/2605.09461)
   - 미묘한 의미 차이로 갈리는 취약점을 위한 context packing 단계를 배울 수 있습니다. Control Path는 AST, CFG, DFG 정보를 말로 풀어주고, Knowledge Path는 CWE 기반 패턴과 예시를 검색하며, Semantic Path는 최종 판단 전에 코드 동작을 요약합니다. 완전한 자율 에이전트는 아니지만, 리뷰어에게 control-flow, data-flow, 사전 지식, 동작 요약을 구조화해서 제공하는 하네스 구성요소로 유용합니다.
 
@@ -164,6 +170,9 @@
 - [2025-12-08 — VulnLLM-R: 취약점 탐지를 위한 Specialized Reasoning LLM과 Agent Scaffold](https://arxiv.org/abs/2512.07533)
   - 취약점 추론 모델을 프로젝트 단위 헌팅 에이전트 scaffold로 감싸는 방식을 배울 수 있습니다. 프로그램 상태를 추론하고, 추론 시점 최적화를 적용하며, 실제 저장소에서 CodeQL과 AFL++ baseline을 기준으로 검증합니다. LogicScan이나 Synapse만큼 논리 버그에 특화된 것은 아니지만, 모델 특화, 에이전트 scaffold, 실제 finding 검증을 분리해 보는 데 유용합니다.
 
+- [2025-10-04 — RFCAudit: Network Protocol Functional Bug 탐지를 위한 LLM Agent](https://arxiv.org/abs/2506.00714)
+  - 네트워크 프로토콜의 명세와 구현 사이 semantic drift를 탐지하는 방법을 배울 수 있습니다. indexing agent가 코드 동작을 계층적으로 요약하고, detection agent가 필요한 자료구조와 함수를 demand-driven 방식으로 검색해 RFC 요구사항과 대조합니다. 발견한 functional bug 47개 중 20개가 개발자에게 확인되거나 수정됐다는 결과는 protocol specification과 invariant를 노드 클라이언트 동작에 대조하는 모델로 유용합니다.
+
 - [2025-08 — LLMxCPG: Code Property Graph 기반 Context-Aware 취약점 탐지](https://www.usenix.org/conference/usenixsecurity25/presentation/lekssays)
   - 저장소 단위 에이전트를 위한 context reducer를 배울 수 있습니다. CPG 기반 slice를 만들어 function-level과 multi-function 사례에서 취약점 관련 맥락을 보존하면서 코드 크기를 줄입니다. 그 자체로 agentic workflow는 아니지만, LLM 리뷰어가 어떤 코드, 의존성, 문법 변형을 봐야 하는지 결정하는 pre-agent 계층으로 실용적입니다.
 
@@ -174,6 +183,12 @@
   - iAudit의 2단계 스마트 컨트랙트 감사 루프를 배울 수 있습니다. Detector가 취약해 보이는 코드를 찾고, Reasoner가 원인을 제시한 뒤, Ranker와 Critic 에이전트가 어떤 원인이 증거를 가장 잘 설명하는지 토론합니다. 논리적 스마트 컨트랙트 finding에는 단순한 vulnerable/not-vulnerable 라벨보다 원인 선택과 적대적 정당화가 필요하다는 점이 핵심입니다.
 
 ## 프로젝트
+- [lebronlambert — Agora](https://github.com/lebronlambert/Agora)
+  - orchestrator, 프로토콜 인식 전략 생성, 반복적인 테스트 생성과 reflection, persistent knowledge, 확인된 버그의 variant mining으로 구성된 실행 가능한 consensus bug hunter를 살펴볼 수 있습니다. 단일 함수 취약점 패턴보다 상태 의존적인 consensus safety violation을 겨냥하는 에이전트 루프로 확장하기에 이 목록에서 가장 직접적인 프로젝트입니다.
+
+- [Asymmetric Research — agent-coverage](https://github.com/asymmetric-research/agent-coverage)
+  - Codex와 Claude Code session log를 파일·라인 coverage로 바꾸고, 각 코드 접근을 해당 task나 subagent에 연결한 뒤, local checkout 위에서 blind spot을 시각화하는 가벼운 observability prototype입니다. 이를 semantic coverage나 bug coverage가 아닌 attention coverage로 취급하고, 비어 있는 영역에 다음 감사 실행을 배정하거나 prompt와 model의 대상 탐색 방식을 비교하는 데 사용할 수 있습니다.
+
 - [Cloudflare — security-audit-skill](https://github.com/cloudflare/security-audit-skill)
   - 간결한 6단계 코딩 에이전트 감사 스킬을 배울 수 있습니다. 병렬 정찰, 여러 관점의 탐색, 적대적 검증, 중복 제거, 누적 결과, 기계가 읽을 수 있는 출력이 포함됩니다. 가장 중요한 재사용 규칙은 검증 담당을 발견 담당과 분리하고, 후보가 살아남기 전에 악용 가능성을 적극적으로 반박하게 하는 것입니다.
 

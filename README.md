@@ -6,7 +6,7 @@ A curated list of public resources about using coding agents, LLM-driven harness
 
 The focus is practical agentic bug hunting: source-code or binary exploration, vulnerability hypothesis generation, validation, PoC construction, triage, and repeatable harness design.
 
-Last reviewed: 2026-07-09
+Last reviewed: 2026-07-10
 
 ## Contents
 
@@ -65,7 +65,7 @@ Each entry is written as a short learning note: what to copy into an agentic bug
   - Learn MDASH's concrete stages: prepare language-aware indices and threat models, scan with auditor agents, validate with debaters, dedupe semantic duplicates, and prove bugs with dynamic triggers such as ASan cases. The key lesson is not one agent but 100+ specialized agents whose disagreement, failed refutation, and proof artifacts raise confidence.
 
 - [2026-05-04 — Asymmetric Research — Introducing Crucible: An Invariant Fuzzing Framework for Solana](https://blog.asymmetric.re/introducing-crucible-an-invariant-fuzzing-framework-for-solana/)
-  - Learn sequence-aware invariant harness design for logical bugs: model stateful Solana actions, mutate typed instruction sequences, and assert compact properties such as stake weight never exceeding backing lamports. For LLM-driven hunting, this is a strong target shape: convert a semantic suspicion into an invariant, then let the harness search for the multi-step witness that violates it.
+  - Although Crucible is not itself agentic, learn how to give a logic-bug agent a precise semantic target: encode domain reasoning as an executable invariant, model stateful Solana actions, and search typed instruction sequences for a violating witness. Its phantom-stake case—delegation weight exceeding backing lamports—shows how an LLM-generated economic or consensus invariant can drive multi-step validation instead of generic fuzzing.
 
 - [2026-04-29 — Xint — Copy Fail: 732 Bytes to Root on Every Major Linux Distribution](https://xint.io/blog/copy-fail-linux-distributions)
   - Learn how a sharp human invariant plus an agentic search loop can expose a catastrophic kernel bug: page-cache-backed data should not enter writable crypto scatterlists. The reusable pattern is to seed the agent with one precise cross-subsystem suspicion, let it variant-mine the combinatorial surface, then judge severity by the resulting primitive and reproducible exploit path.
@@ -140,6 +140,12 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-06-20 — Revelio: Cost-Efficient Agentic Memory Safety Vulnerability Detection for Repository-Scale Codebases](https://arxiv.org/abs/2606.22263)
   - Learn a hallucination-resistant validation gate for repository-scale agents: inexpensive LLMs and lightweight static analysis generate and rank hypotheses, but a finding survives only when an executable Proof-of-Vulnerability is reproduced under a deterministic sanitizer. It is memory-safety focused rather than logic-bug focused, yet the generate-rank-prove contract is a strong pattern for any serious bug-hunting system.
 
+- [2026-06-17 — Code-Augur: Agentic Vulnerability Detection via Specification Inference](https://arxiv.org/abs/2606.18619)
+  - Learn a specification-first loop that makes an agent externalize the assumptions behind a "secure" judgment as in-source invariants, then attempts to falsify and refine them at runtime. Although the implementation uses guided fuzzing as the falsifier, the transferable logic-bug lesson is to turn tacit safety reasoning into executable obligations instead of trusting an agent's verdict.
+
+- [2026-05-28 — Agora: Toward Autonomous Bug Detection in Production-Level Consensus Protocols with LLM Agents](https://arxiv.org/abs/2605.29910)
+  - Learn the closest public workflow for agentic consensus-logic hunting: domain-aware agents maintain protocol state, enforce fault-model constraints, synthesize attack scenarios, and iteratively validate hypotheses against global safety invariants. Its 15 previously unknown protocol-level logic bugs across Raft, EPaxos, HotStuff, and BullShark show why stateful scenario reasoning and hypothesis-driven testing matter more than isolated code review.
+
 - [2026-05-12 — VulTriage: Triple-Path Context Augmentation for LLM-Based Vulnerability Detection](https://arxiv.org/abs/2605.09461)
   - Learn a context-packing stage for subtle semantic vulnerabilities: a Control Path verbalizes AST, CFG, and DFG facts, a Knowledge Path retrieves CWE-derived patterns and examples, and a Semantic Path summarizes behavior before the final judgment. It is not a full autonomous agent, but it is a useful harness component for giving reviewers structured control-flow, data-flow, prior-knowledge, and behavior context.
 
@@ -164,6 +170,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2025-12-08 — VulnLLM-R: Specialized Reasoning LLM with Agent Scaffold for Vulnerability Detection](https://arxiv.org/abs/2512.07533)
   - Learn how a vulnerability-reasoning model is wrapped in an agent scaffold for project-level hunting: reason about program states, apply test-time optimization, and validate on real repositories against CodeQL and AFL++ baselines. It is less logic-bug-specific than LogicScan or Synapse, but useful for separating model specialization, agent scaffolding, and real-world finding validation.
 
+- [2025-10-04 — RFCAudit: An LLM Agent for Functional Bug Detection in Network Protocols](https://arxiv.org/abs/2506.00714)
+  - Learn specification-to-implementation semantic-drift detection for network protocols: an indexing agent builds hierarchical summaries of code behavior, while a detection agent retrieves relevant structures and functions on demand and checks them against RFC requirements. Its 47 functional bugs, including 20 confirmed or fixed by developers, make it a useful model for comparing protocol specifications and invariants with node-client behavior.
+
 - [2025-08 — LLMxCPG: Context-Aware Vulnerability Detection Through Code Property Graph-Guided Large Language Models](https://www.usenix.org/conference/usenixsecurity25/presentation/lekssays)
   - Learn a context reducer for repository-scale agents: construct CPG-based slices that shrink code while preserving vulnerability-relevant context across function-level and multi-function cases. This is not an agentic workflow by itself, but it is a practical pre-agent layer for deciding what code, dependencies, and syntactic variants an LLM reviewer should see.
 
@@ -174,6 +183,12 @@ Each entry is written as a short learning note: what to copy into an agentic bug
   - Learn iAudit's two-stage smart-contract audit loop: a Detector identifies likely vulnerable code, a Reasoner proposes causes, then Ranker and Critic agents debate which cause best explains the evidence. The useful workflow lesson is that logical smart-contract findings need cause selection and adversarial justification, not just a binary vulnerable/not-vulnerable label.
 
 ## Projects
+- [lebronlambert — Agora](https://github.com/lebronlambert/Agora)
+  - Study a runnable consensus bug-hunter organized around an orchestrator, protocol-aware strategy generation, iterative test generation and reflection, persistent knowledge, and confirmed-bug variant mining. It is the most direct project in this list for adapting an agent loop to state-dependent consensus safety violations rather than single-function vulnerability patterns.
+
+- [Asymmetric Research — agent-coverage](https://github.com/asymmetric-research/agent-coverage)
+  - Study a lightweight observability prototype that turns Codex and Claude Code session logs into file and line coverage linked to the task or subagent behind each read, then visualizes blind spots against a local checkout. Treat it as attention coverage—not semantic or bug coverage—and use the gaps to redirect audit runs toward untouched attack surfaces or compare how prompts and models explore a target.
+
 - [Cloudflare — security-audit-skill](https://github.com/cloudflare/security-audit-skill)
   - Learn a compact six-phase coding-agent audit skill: parallel recon, multi-angle hunt, adversarial validation, dedupe, cumulative findings, and machine-readable outputs. The most important reusable rule is that the validator must be separate from the finder and should try to disprove exploitability before a finding is allowed to survive.
 
