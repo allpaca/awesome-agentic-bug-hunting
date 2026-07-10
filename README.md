@@ -28,7 +28,7 @@ Last reviewed: 2026-07-10
 Each entry is written as a short learning note: what to copy into an agentic bug-hunting system that is trying to automatically find serious, reproducible vulnerabilities, with a particular focus on logical bugs rather than generic security observations.
 
 ## Articles
-- [2026-06-30 — Yue Xue — AI Auditing Methodology: Agent Self-Evolution, Drift, Reverse Evolution and Solutions](https://www.linkedin.com/pulse/ai-auditing-methodology-agent-self-evolution-drift-reverse-yue-xue-uqsse/)
+- [2026-06-30 — Yue Xue — AI Auditing Methodology, Part III](https://x.com/xy9301/status/2071845290018284002)
   - Learn how long-running audit systems fail: vulnerability drift moves the agent to easier nearby issues, and reverse evolution makes prompts bigger without improving hit rate. The reusable design is decomposition → task definition → reasoning, with each task anchored by target, boundary, witness, completion condition, verifier, and local evolution rules.
 
 - [2026-06-26 — ClickHouse — How I Hunt for Vulnerabilities with AI](https://clickhouse.com/blog/how-i-hunt-for-vulnerabilities-with-ai)

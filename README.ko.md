@@ -28,7 +28,7 @@
 각 항목은 단순 요약이 아니라, “AI agent로 심각하고 재현 가능한 논리 버그를 자동으로 찾는 구조에 무엇을 가져올 수 있는가”를 짧게 정리한 학습 노트입니다.
 
 ## 아티클
-- [2026-06-30 — Yue Xue — AI Auditing Methodology: Agent Self-Evolution, Drift, Reverse Evolution and Solutions](https://www.linkedin.com/pulse/ai-auditing-methodology-agent-self-evolution-drift-reverse-yue-xue-uqsse/)
+- [2026-06-30 — Yue Xue — AI Auditing Methodology, Part III](https://x.com/xy9301/status/2071845290018284002)
   - 장기 실행 감사 시스템이 어떻게 실패하는지 배울 수 있습니다. vulnerability drift는 에이전트를 더 쉬운 주변 문제로 끌고 가고, reverse evolution은 프롬프트만 길게 만들 뿐 적중률을 높이지 못합니다. 재사용할 설계는 분해 → 작업 정의 → 추론이며, 각 작업은 대상, 경계, 증거, 완료 조건, 검증자, 국소적 개선 규칙으로 고정되어야 합니다.
 
 - [2026-06-26 — ClickHouse — AI로 취약점을 찾는 방법](https://clickhouse.com/blog/how-i-hunt-for-vulnerabilities-with-ai)
