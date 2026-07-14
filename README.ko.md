@@ -6,7 +6,7 @@
 
 이 리스트는 실전형 에이전트 기반 버그 헌팅에 초점을 둡니다. 소스코드나 바이너리 탐색, 취약점 가설 생성, 검증, PoC 작성, 분류/검토, 재사용 가능한 하네스 설계를 다룹니다.
 
-마지막 검토일: 2026-07-10
+마지막 검토일: 2026-07-14
 
 ## 목차
 
@@ -103,6 +103,9 @@
 - [2026-03-09 — Devansh — Needle in the Haystack: 취약점 연구를 위한 LLM](https://devansh.bearblog.dev/needle-in-the-haystack/)
   - 막연한 “버그 찾아줘”식 프롬프트가 왜 실패하는지 배울 수 있습니다. threat model, 공격자 능력, 신뢰 경계, 과거 CVE 맥락이 없으면 모델은 CWE 이름만 닮은 환각성 지적을 많이 만듭니다. 재사용할 기본 절차는 작게 시작하는 것입니다. 얇은 범위를 고르고, 한 페이지 threat model을 만들고, 불변식과 진입점을 찾은 뒤 악용 가능성을 증명하는 call chain과 테스트를 요청합니다.
 
+- [2026-03-06 — GitHub Security Lab — 오픈소스 AI 기반 프레임워크로 취약점을 스캔하는 방법](https://github.blog/security/how-to-scan-for-vulnerabilities-with-github-security-labs-open-source-ai-powered-framework/)
+  - 재현 가능한 web-logic taskflow를 배울 수 있습니다. 저장소를 component로 분해하고, entrypoint, 권한, 의도된 동작을 저장한 뒤, 가설 생성과 각 후보 감사를 분리된 문맥에서 수행하면서 구체적인 공격자 시나리오와 소스 증거를 요구합니다. 80건이 넘는 취약점 보고와 공개된 권한 검증 버그는 component threat model과 독립적인 기각 단계가 막연한 “버그를 찾아라” 프롬프트보다 효과적인 이유를 보여줍니다.
+
 - [2026-02-11 — OpenAI — Harness Engineering](https://openai.com/index/harness-engineering/)
   - 에이전트가 저장소와 실행 환경을 제대로 이해하도록 만드는 방법을 배울 수 있습니다. AGENTS.md를 작업 지도처럼 쓰고, 저장소 내부 문서를 기준 정보로 관리하며, lint/CI로 문서와 코드의 일관성을 강제하고, worktree별 격리 실행 환경과 DevTools, 로그, 메트릭, 트레이스를 제공합니다. 버그 헌팅에서도 자율 실행 전에 코드 지도, threat model, 검증 명령, 관찰 가능한 실행 환경을 먼저 갖춰야 합니다.
 
@@ -128,6 +131,9 @@
   - Big Sleep의 첫 공개 사례를 배울 수 있습니다. 실제 코드에서 LLM이 변종 취약점을 찾고, 실패한 테스트케이스를 고치며, 크래시를 재현하고, maintainer가 조치할 수 있는 원인 분석 보고서를 작성하는 흐름입니다. 가설 → 테스트케이스 → 근본 원인으로 이어지는 피드백 루프를 가져오되, 최신 운영 현황이라기보다는 초기 사례 연구로 보는 편이 좋습니다.
 
 ## 논문
+- [2026-07-11 — Multi-Agent Flaw Discovery and Analysis를 통한 Core Carrier Network의 Implicit Trust Error 이해](https://arxiv.org/abs/2607.10315)
+  - iFinder의 protection-aware 논리 버그 루프를 배울 수 있습니다. 과거 이슈에서 반복되는 implicit-trust 패턴을 추출하고, 누락된 구문 검사, 의미 불변식, 자원 guard를 탐색한 뒤, 3GPP 명세와 코드 양쪽에서 기존 방어를 확인해 후보를 반박하고 생성한 PoC를 반복 실행합니다. 확인된 finding 83개와 CVE 81개는 두 종류의 반증 자료를 함께 사용하면 프로토콜 variant hunting의 신호 품질을 높일 수 있음을 보여줍니다.
+
 - [2026-07-08 — Thinking More, Harnessing Better: Project Digestion과 Workflow Decomposition을 이용한 Harness 자동 생성](https://arxiv.org/abs/2607.07007)
   - 대상이 퍼징이 아니더라도 SynapseFlow의 단계적 하네스 생성 workflow를 배울 수 있습니다. 프로젝트를 structural flow graph로 소화하고, 관련 함수 triplet을 묶은 뒤, correctness가 깨지면 rollback하는 4단계 프로세스로 하네스를 합성합니다. 재사용할 핵심은 one-shot 생성에 기대지 않고, 하네스 생성을 분해 가능하고 측정 가능하며 실패 복구 가능한 과정으로 만드는 것입니다.
 
@@ -136,6 +142,9 @@
 
 - [2026-07-01 — Knowdit — Auditing Knowledge Summarization을 이용한 Agentic Smart Contract Vulnerability Detection](https://arxiv.org/html/2603.26270v2)
   - 논문 기반 지식 주도 스마트 컨트랙트 감사를 배울 수 있습니다. 인간 감사 보고서에서 감사 지식 그래프를 만들고, DeFi 의미와 버그 패턴을 대상에 대응시킨 뒤, 명세 생성, PoC 합성, 실행, 회고를 반복합니다. 보고된 high 9개와 medium severity unknown finding 36개는 도메인 지식과 실행 가능한 증거가 일반적인 Solidity 냄새 탐지보다 강하다는 점을 보여줍니다.
+
+- [2026-06-25 — Chai: Agentic Cryptographic Misuse 취약점 발견](https://arxiv.org/abs/2606.26933)
+  - sanitizer oracle이 없는 버그 유형을 위한 signal-first workflow를 배울 수 있습니다. 에이전트가 여러 peer 구현에 protocol-aware 입력을 만들게 하고, 결정론적인 동작 불일치를 검증 신호로 사용한 뒤, 확인된 모호성을 dependency graph를 따라 downstream PoC 감사로 연결합니다. 라이브러리 수준의 불일치 하나를 여러 consumer에 재사용 가능한 실마리로 확장할 수 있습니다.
 
 - [2026-06-20 — Revelio: Repository-Scale Codebase를 위한 비용 효율적 Agentic Memory Safety 취약점 탐지](https://arxiv.org/abs/2606.22263)
   - 저장소 단위 에이전트를 위한 hallucination 방지 검증 게이트를 배울 수 있습니다. 저렴한 LLM과 가벼운 정적 분석으로 가설을 만들고 순위를 매기지만, 최종 finding은 실행 가능한 Proof-of-Vulnerability가 deterministic sanitizer에서 재현될 때만 살아남습니다. 논리 버그보다는 memory safety 중심이지만, generate-rank-prove 계약은 심각한 버그 헌팅 시스템 전반에 적용할 만한 강한 패턴입니다.
@@ -148,6 +157,12 @@
 
 - [2026-05-12 — VulTriage: LLM 기반 취약점 탐지를 위한 Triple-Path Context Augmentation](https://arxiv.org/abs/2605.09461)
   - 미묘한 의미 차이로 갈리는 취약점을 위한 context packing 단계를 배울 수 있습니다. Control Path는 AST, CFG, DFG 정보를 말로 풀어주고, Knowledge Path는 CWE 기반 패턴과 예시를 검색하며, Semantic Path는 최종 판단 전에 코드 동작을 요약합니다. 완전한 자율 에이전트는 아니지만, 리뷰어에게 control-flow, data-flow, 사전 지식, 동작 요약을 구조화해서 제공하는 하네스 구성요소로 유용합니다.
+
+- [2026-05-11 — Agentic Fuzzing: Opportunities and Challenges](https://arxiv.org/abs/2605.10074)
+  - AFuzz에서 reasoning-driven variant hunting을 배울 수 있습니다. 과거 버그에서 근본 원인을 추출하고, 같은 실패를 일으킬 수 있지만 구조적으로는 다른 시나리오를 가설화한 뒤, 생성한 PoC가 실제로 실행돼야 후보를 인정합니다. 4단계 파이프라인은 동일한 조사를 반복하지 않도록 scenario coverage를 관리하고, 규모 확장을 위해 다양성 기반 seed scheduling을 적용합니다. V8 finding 40개(중복 3개 포함), SpiderMonkey·JavaScriptCore의 추가 finding 19개(중복 1개 포함), CVE 2개, 총 $35,000 bounty라는 결과는 전통적인 coverage feedback이 놓치기 쉬운 논리 버그에 deep agent를 적용한 구체적인 근거를 제공합니다.
+
+- [2026-05-06 — Windows COM Binary를 위한 Agentic Vulnerability Reasoning](https://arxiv.org/abs/2605.05000)
+  - 바이너리 전용 race-condition hunting을 도메인 도구로 grounding하는 방법을 배울 수 있습니다. decompilation, vtable과 call navigation, live COM metadata, compilation, execution, debugger state를 제공하고, debugger에서 검증된 PoC만 인정합니다. SLYP의 MSRC 확인 finding 28개는 일반적인 decompiler prompting보다 플랫폼 metadata와 runtime feedback이 중요한 이유를 보여줍니다.
 
 - [2026-04-22 — Synthesizing Multi-Agent Harnesses for Vulnerability Discovery](https://arxiv.org/abs/2604.20801)
   - 프롬프트뿐 아니라 하네스 자체를 최적화하는 방법을 배울 수 있습니다. 역할, 도구, 통신 구조, 재시도, 조율 규칙을 typed graph DSL로 모델링합니다. 핵심 교훈은 대상에서 나온 런타임 피드백으로 어떤 하네스 구성요소가 실패했는지 진단하고, 체계적으로 다시 설계할 수 있다는 점입니다. 논문은 알려지지 않았던 Chrome zero-day 발견도 보고합니다.

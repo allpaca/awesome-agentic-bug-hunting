@@ -6,7 +6,7 @@ A curated list of public resources about using coding agents, LLM-driven harness
 
 The focus is practical agentic bug hunting: source-code or binary exploration, vulnerability hypothesis generation, validation, PoC construction, triage, and repeatable harness design.
 
-Last reviewed: 2026-07-10
+Last reviewed: 2026-07-14
 
 ## Contents
 
@@ -103,6 +103,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-03-09 — Devansh — Needle in the Haystack: LLMs for Vulnerability Research](https://devansh.bearblog.dev/needle-in-the-haystack/)
   - Learn why vague "find bugs" prompts fail: without threat model, attacker capability, trust boundaries, and prior CVE context, models produce broad CWE-shaped hallucinations. The reusable scaffold is intentionally small: pick a thin slice, build a one-page threat model, identify invariants and entrypoints, then ask for call chains and tests that prove exploitability.
 
+- [2026-03-06 — GitHub Security Lab — How to scan for vulnerabilities with GitHub Security Lab’s open source AI-powered framework](https://github.blog/security/how-to-scan-for-vulnerabilities-with-github-security-labs-open-source-ai-powered-framework/)
+  - Learn a reproducible web-logic taskflow: decompose a repository into components, persist entrypoints, privileges, and intended behavior, generate hypotheses separately, then audit each candidate in fresh context under concrete attacker-scenario and source-evidence requirements. More than 80 reported vulnerabilities and disclosed authorization bugs show why component threat models plus an independent rejection stage beat broad "find bugs" prompts.
+
 - [2026-02-11 — OpenAI — Harness Engineering](https://openai.com/index/harness-engineering/)
   - Learn how OpenAI made agent work legible: AGENTS.md as a map, repo-local docs as the system of record, mechanical lint/CI checks, worktree-isolated app instances, DevTools, logs, metrics, and traces. For bug hunting, make the target equally inspectable and executable before autonomy: maps, threat docs, validation commands, observability, and cleanup loops.
 
@@ -128,6 +131,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
   - Learn the first public Big Sleep case study: LLM-assisted variant hunting over real code, adapting failing testcases, reproducing crashes, and writing maintainer-actionable root-cause reports. Use it for the concrete feedback loop from hypothesis to testcase to root cause, while treating it as an early case study rather than the current state of Big Sleep operations.
 
 ## Papers
+- [2026-07-11 — Understanding Implicit Trust Errors in Core Carrier Networks through Multi-Agent Flaw Discovery and Analysis](https://arxiv.org/abs/2607.10315)
+  - Learn iFinder's protection-aware logic-bug loop: distill recurring implicit-trust patterns from prior issues, search for missing syntax checks, semantic invariants, and resource guards, then refute candidates against both 3GPP specifications and code before iteratively executing generated PoCs. Its 83 confirmed findings and 81 CVEs show how dual-source counterevidence can make protocol variant hunting high-signal.
+
 - [2026-07-08 — Thinking More, Harnessing Better: State Machine Guided Harness Automatic Generation with Project Digestion and Workflow Decomposition](https://arxiv.org/abs/2607.07007)
   - Learn SynapseFlow's staged harness-generation workflow even if your target is not fuzzing: digest the project into structural flow graphs, aggregate coherent function triplets, then synthesize harnesses through a four-stage process with rollback when correctness breaks. The transferable lesson is to make harness construction decomposed, measurable, and failure-recoverable instead of trusting one-shot generation.
 
@@ -136,6 +142,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 
 - [2026-07-01 — Knowdit — Agentic Smart Contract Vulnerability Detection with Auditing Knowledge Summarization](https://arxiv.org/html/2603.26270v2)
   - Learn knowledge-driven smart-contract auditing from the paper: build an auditing knowledge graph from human reports, map DeFi semantics and bug patterns onto a target, then iterate specification generation, PoC synthesis, execution, and reflection. Its reported 9 high- and 36 medium-severity unknown findings show why domain knowledge plus executable proof beats generic Solidity smell scanning.
+
+- [2026-06-25 — Chai: Agentic Discovery of Cryptographic Misuse Vulnerabilities](https://arxiv.org/abs/2606.26933)
+  - Learn a signal-first workflow for bug classes without sanitizer oracles: let agents generate protocol-aware inputs across peer implementations, use deterministic behavioral disagreement as the verifier, then trace confirmed ambiguities through a dependency graph into focused downstream PoC audits. A single library-level discrepancy can thereby produce reusable leads across many consumers.
 
 - [2026-06-20 — Revelio: Cost-Efficient Agentic Memory Safety Vulnerability Detection for Repository-Scale Codebases](https://arxiv.org/abs/2606.22263)
   - Learn a hallucination-resistant validation gate for repository-scale agents: inexpensive LLMs and lightweight static analysis generate and rank hypotheses, but a finding survives only when an executable Proof-of-Vulnerability is reproduced under a deterministic sanitizer. It is memory-safety focused rather than logic-bug focused, yet the generate-rank-prove contract is a strong pattern for any serious bug-hunting system.
@@ -148,6 +157,12 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 
 - [2026-05-12 — VulTriage: Triple-Path Context Augmentation for LLM-Based Vulnerability Detection](https://arxiv.org/abs/2605.09461)
   - Learn a context-packing stage for subtle semantic vulnerabilities: a Control Path verbalizes AST, CFG, and DFG facts, a Knowledge Path retrieves CWE-derived patterns and examples, and a Semantic Path summarizes behavior before the final judgment. It is not a full autonomous agent, but it is a useful harness component for giving reviewers structured control-flow, data-flow, prior-knowledge, and behavior context.
+
+- [2026-05-11 — Agentic Fuzzing: Opportunities and Challenges](https://arxiv.org/abs/2605.10074)
+  - Learn a reasoning-driven form of variant hunting from AFuzz: start from a historical bug, extract its root cause, hypothesize structurally different scenarios that may reproduce the same failure, and require generated PoCs to execute before accepting a candidate. Its four-stage pipeline adds scenario coverage to avoid repeating equivalent investigations and diversity-aware seed scheduling for scale; the reported 40 V8 findings (including three duplicates), 19 additional SpiderMonkey/JavaScriptCore findings (including one duplicate), two CVEs, and $35,000 in bounties provide unusually concrete evidence for applying deep agents to logic bugs that conventional coverage feedback may miss.
+
+- [2026-05-06 — Agentic Vulnerability Reasoning on Windows COM Binaries](https://arxiv.org/abs/2605.05000)
+  - Learn how to ground binary-only race-condition hunting with domain tools: expose decompilation, vtable and call navigation, live COM metadata, compilation, execution, and debugger state, then accept only debugger-verified PoCs. SLYP's 28 MSRC-confirmed findings show why platform metadata and runtime feedback matter more than generic decompiler prompting.
 
 - [2026-04-22 — Synthesizing Multi-Agent Harnesses for Vulnerability Discovery](https://arxiv.org/abs/2604.20801)
   - Learn how to optimize the harness itself, not just the prompts: roles, tools, communication topology, retries, and coordination protocol are modeled in a typed graph DSL. The key lesson is that runtime feedback from the target can diagnose which harness component failed, enabling systematic rewrites that reportedly found previously unknown Chrome zero-days.
