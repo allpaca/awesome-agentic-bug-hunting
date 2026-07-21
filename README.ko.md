@@ -28,6 +28,9 @@
 각 항목은 단순 요약이 아니라, “AI agent로 심각하고 재현 가능한 논리 버그를 자동으로 찾는 구조에 무엇을 가져올 수 있는가”를 짧게 정리한 학습 노트입니다.
 
 ## 아티클
+- [2026-07-01 — Calif / Jun Rong — MAD Bugs: My Cousin Vinyl (CVE-2026-50052)](https://blog.calif.io/p/mad-bugs-my-cousin-vinyl-cve-2026)
+  - 독립적인 fresh-context 검토가 impact 분석에 필요한 이유를 배울 수 있습니다. 첫 subagent는 prefix comparison 버그를 놓쳤고, 두 번째는 찾았지만 DoS로만 판단했으며, Mythos는 HTTP/2-to-HTTP/1 변환 오류를 request smuggling으로 확장했습니다. 재사용할 패턴은 impact ladder입니다. 동작을 다시 찾고, 최초 심각도 판단을 반박하고, 공유 상태나 connection reuse 때문에 하나의 잘못된 요청이 이후 피해자에게 영향을 주는지 검증합니다.
+
 - [2026-06-30 — Yue Xue — AI Auditing Methodology, Part III](https://x.com/xy9301/status/2071845290018284002)
   - 장기 실행 감사 시스템이 어떻게 실패하는지 배울 수 있습니다. vulnerability drift는 에이전트를 더 쉬운 주변 문제로 끌고 가고, reverse evolution은 프롬프트만 길게 만들 뿐 적중률을 높이지 못합니다. 재사용할 설계는 분해 → 작업 정의 → 추론이며, 각 작업은 대상, 경계, 증거, 완료 조건, 검증자, 국소적 개선 규칙으로 고정되어야 합니다.
 
@@ -43,11 +46,20 @@
 - [2026-06-23 — Zero Cool Labs — Symmetry Sniper](https://x.com/ZeroCool_AI/status/2069443859327705497)
   - X 아티클의 좁은 범위 전문 스킬 패턴을 배울 수 있습니다. 문서, 이름, 이벤트, 인터페이스, 테스트에서 의도된 대칭 관계를 먼저 확인한 뒤, 상태 변경, 자산 이동, 권한 검사, 반올림, 0 값, 경계값 처리를 비교합니다. 보고 가능한 취약점은 불변식 위반, 권한 불일치, 수수료/반올림 비대칭, batch 우회처럼 측정 가능한 영향만 허용하므로 잡음이 적은 스킬 설계에 좋습니다.
 
+- [2026-06-22 — OpenAI — Patch the Planet: 오픈소스 maintainer를 지원하는 Daybreak initiative](https://openai.com/index/patch-the-planet/)
+  - fleet-scale 발견-to-remediation loop를 배울 수 있습니다. 반복적인 goal 실행으로 fuzz coverage를 확장하고, 과거 CVE를 전문 judge가 포함된 variant-search pipeline으로 바꾸며, differential harness로 구현체를 비교하고, 명세에서 invariant와 property test를 만듭니다. 핵심 운영 gate는 공개 전에 전문가가 재현하고, 프로젝트별 threat model을 확인하고, 중복과 심각도를 교정하고, maintainer 방식에 맞는 패치를 만드는 것입니다.
+
 - [2026-06-18 — Cloudflare — 나만의 취약점 하네스 만들기](https://blog.cloudflare.com/build-your-own-vulnerability-harness/)
   - 운영 환경에 가까운 취약점 탐색 파이프라인을 배울 수 있습니다. 정찰, 탐색, 빈 영역 보강, 추적, 중복 제거, 판단, 수정, 여러 하네스의 결과를 받아들이는 검증 시스템이 핵심입니다. 특히 단계별 상태 저장, 좁은 조사를 위한 micro-fork, 필요한 자료를 요청하는 wishlist, 저장소 간 추적, 검증되지 않은 실마리가 보고서로 넘어가지 못하게 하는 gate를 참고할 만합니다.
 
 - [2026-06-17 — Praetorian — FreeBSD Kernel에서의 AI 취약점 연구](https://www.praetorian.com/blog/ai-vulnerability-research-freebsd-kernel/)
   - 커널 감사를 실행 가능한 검증 루프로 바꾸는 방법을 배울 수 있습니다. 소스 리뷰, 가설 수립, trigger program, 계측된 VM, KASAN telemetry, 재현 코드 반복 수정이 핵심입니다. 심각한 native-code 헌팅에서는 검증 환경이 특히 중요하며, 에이전트가 실패를 관찰하고 sanitizer 출력을 읽고 PoC를 고치거나 잘못된 후보를 버릴 수 있어야 합니다.
+
+- [2026-06-04 — Shielded Labs — Orchard Counterfeiting Vulnerability](https://shieldedlabs.net/the-orchard-counterfeiting-vulnerability/)
+  - 표적화된 도메인 전문성과 custom AI harness로 암호학적 invariant를 공격하는 방법을 배울 수 있습니다. 회로 soundness에 검토를 집중하고, under-constrained element를 로컬 regtest에서 동작하는 완전한 위조 exploit로 만든 뒤, 긴급 수정까지 조율했습니다. 논리 버그 에이전트에는 막연한 감사 대신 하나의 치명적 속성과 실행 가능한 환경을 주어야 한다는 교훈입니다.
+
+- [2026-06-02 — Calif — Codex가 발견한 Hidden HTTP/2 Bomb](https://blog.calif.io/p/codex-discovered-a-hidden-http2-bomb)
+  - exploit composition과 cross-implementation variant mining을 배울 수 있습니다. Codex는 HPACK allocation amplification과 flow-control stall을 결합하고, 서버별 lab과 PoC를 생성한 뒤, 공개 fix diff에서 다른 영향받는 서버를 찾았습니다. resource-exhaustion bug를 amplification × lifetime으로 모델링하고, 알려진 primitive를 따로 보지 말고 기본 설정의 여러 구현체에서 함께 검증하는 패턴이 핵심입니다.
 
 - [2026-06-01 — Night-Wolf — Closed Source Software에서의 AI-Powered Bug Hunting](https://blogs.night-wolf.io/ai-powered-bug-hunting-in-closed-source-software)
   - 소스코드가 없을 때 에이전트 기반 헌팅을 바꾸는 방법을 배울 수 있습니다. 디컴파일하고, 디컴파일러용 스킬을 만들고, 여러 관점의 검토를 돌리고, 불가능한 전제조건을 걸러내며, 블랙박스 검증으로 후보를 확인합니다. 리버싱 산출물은 불완전한 증거이므로 실제 바이너리에서 주장한 공격 경로가 존재한다는 런타임 확인이 필요합니다.

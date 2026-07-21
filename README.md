@@ -28,6 +28,9 @@ Last reviewed: 2026-07-14
 Each entry is written as a short learning note: what to copy into an agentic bug-hunting system that is trying to automatically find serious, reproducible vulnerabilities, with a particular focus on logical bugs rather than generic security observations.
 
 ## Articles
+- [2026-07-01 — Calif / Jun Rong — MAD Bugs: My Cousin Vinyl (CVE-2026-50052)](https://blog.calif.io/p/mad-bugs-my-cousin-vinyl-cve-2026)
+  - Learn why impact analysis deserves independent fresh-context passes: one subagent missed the prefix-comparison bug, another found it but stopped at denial of service, and Mythos chained the HTTP/2-to-HTTP/1 translation error into request smuggling. Reuse this as an impact ladder—rediscover the behavior, challenge the first severity label, and test whether shared state or connection reuse lets one malformed request affect later victims.
+
 - [2026-06-30 — Yue Xue — AI Auditing Methodology, Part III](https://x.com/xy9301/status/2071845290018284002)
   - Learn how long-running audit systems fail: vulnerability drift moves the agent to easier nearby issues, and reverse evolution makes prompts bigger without improving hit rate. The reusable design is decomposition → task definition → reasoning, with each task anchored by target, boundary, witness, completion condition, verifier, and local evolution rules.
 
@@ -43,11 +46,20 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-06-23 — Zero Cool Labs — Symmetry Sniper](https://x.com/ZeroCool_AI/status/2069443859327705497)
   - Learn the narrow-skill pattern from the X Article: establish an intended mirror from docs, names, events, interfaces, or tests, then compare writes, asset movement, authorization, rounding, zero cases, and bounds. It reports only measurable impacts such as invariant breaks, auth mismatches, fee/rounding asymmetry, or batch bypasses—good discipline for high-signal skills.
 
+- [2026-06-22 — OpenAI — Patch the Planet: a Daybreak initiative to support open source maintainers](https://openai.com/index/patch-the-planet/)
+  - Learn a fleet-scale discovery-to-remediation loop: repeated goal runs expand fuzz coverage, historical CVEs become variant-search pipelines with specialized judges, differential harnesses compare implementations, and specifications drive invariant and property tests. The essential operational gate is expert reproduction, project-specific threat-model checks, deduplication, severity correction, and maintainer-aligned patches before disclosure.
+
 - [2026-06-18 — Cloudflare — Build Your Own Vulnerability Harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/)
   - Learn a production-like pipeline shape: recon, hunt, gap fill, trace, dedupe, judgment, fixing, and a validation system that can consume findings from multiple harnesses. The strongest ideas to reuse are staged persistence, micro-forks for narrow investigations, wishlist/resource handoffs, cross-repo tracing, and gates that stop unvalidated leads from becoming reports.
 
 - [2026-06-17 — Praetorian — AI Vulnerability Research in the FreeBSD Kernel](https://www.praetorian.com/blog/ai-vulnerability-research-freebsd-kernel/)
   - Learn how to turn kernel auditing into an executable oracle loop: source review, hypothesis, trigger program, instrumented VM, KASAN telemetry, and iterative reproducer repair. For severe native-code hunting, the important piece is the validation environment; the agent should be able to fail, observe sanitizer output, adjust the PoC, and know when to abandon an invalid lead.
+
+- [2026-06-04 — Shielded Labs — The Orchard Counterfeiting Vulnerability](https://shieldedlabs.net/the-orchard-counterfeiting-vulnerability/)
+  - Learn how targeted domain expertise plus a custom AI harness can attack cryptographic invariants: focus the review on circuit soundness, turn an under-constrained element into a complete local-regtest counterfeiting exploit, then coordinate an emergency fix. The reusable lesson is to give a logic-bug agent one catastrophic property and an executable environment rather than ask for a generic audit.
+
+- [2026-06-02 — Calif — Codex Discovered a Hidden HTTP/2 Bomb](https://blog.calif.io/p/codex-discovered-a-hidden-http2-bomb)
+  - Learn exploit composition and cross-implementation variant mining: Codex combined HPACK allocation amplification with a flow-control stall, generated per-server labs and PoCs, then used public fix diffs to identify other affected servers. Model resource-exhaustion bugs as amplification × lifetime, and verify both across default configurations instead of treating known primitives independently.
 
 - [2026-06-01 — Night-Wolf — AI-Powered Bug Hunting in Closed Source Software](https://blogs.night-wolf.io/ai-powered-bug-hunting-in-closed-source-software)
   - Learn how to adapt agentic hunting when source is unavailable: decompile, build a decompiler skill, run multi-angle review, filter impossible preconditions, and validate candidates black-box. The severe-bug lesson is to treat reversing artifacts as lossy evidence and require runtime confirmation that the claimed attacker path exists in the real binary.
