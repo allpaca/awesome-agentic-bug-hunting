@@ -6,7 +6,7 @@
 
 이 리스트는 실전형 에이전트 기반 버그 헌팅에 초점을 둡니다. 소스코드나 바이너리 탐색, 취약점 가설 생성, 검증, PoC 작성, 분류/검토, 재사용 가능한 하네스 설계를 다룹니다.
 
-마지막 검토일: 2026-07-14
+마지막 검토일: 2026-07-21
 
 ## 목차
 
@@ -121,6 +121,9 @@
 - [2026-02-11 — OpenAI — Harness Engineering](https://openai.com/index/harness-engineering/)
   - 에이전트가 저장소와 실행 환경을 제대로 이해하도록 만드는 방법을 배울 수 있습니다. AGENTS.md를 작업 지도처럼 쓰고, 저장소 내부 문서를 기준 정보로 관리하며, lint/CI로 문서와 코드의 일관성을 강제하고, worktree별 격리 실행 환경과 DevTools, 로그, 메트릭, 트레이스를 제공합니다. 버그 헌팅에서도 자율 실행 전에 코드 지도, threat model, 검증 명령, 관찰 가능한 실행 환경을 먼저 갖춰야 합니다.
 
+- [2026-01-14 — Anthropic — Claude와 Property-Based Testing으로 Python 생태계의 버그 찾기](https://www.anthropic.com/research/property-based-testing)
+  - 실행 가능한 invariant-to-counterexample loop를 배울 수 있습니다. 에이전트가 코드, 문서, type, 이름을 읽고 의미적 property를 제안한 뒤, Hypothesis test를 작성·실행하고 실패를 재검토해 bug report의 순위를 매깁니다. 공개 평가에서는 생성된 984개 보고서 중 50개를 수동 검토한 표본의 56%가 실제 버그, 32%가 보고할 만한 버그였고, 상위 보고서는 각각 86%와 81%까지 올라갔으며 실제 upstream fix도 merge됐습니다. 보안 전용 연구는 아니지만 property inference와 구체적인 counterexample은 논리 취약점 헌팅에 직접 재사용할 수 있습니다.
+
 - [2025-12-01 — Anthropic — AI 에이전트가 $4.6M 규모의 스마트 컨트랙트 익스플로잇을 발견](https://www.anthropic.com/research/smart-contracts)
   - 도메인 전용 실행 환경이 에이전트의 품질을 어떻게 바꾸는지 배울 수 있습니다. MCP로 Foundry/anvil/cast 도구를 제공하고, 특정 블록의 체인 상태를 fork해 재현 가능한 테스트 환경을 만들며, 실제 익스플로잇 성공을 명확한 성공 기준으로 삼습니다. Web3 헌팅에서는 경제적 영향이 있는 PoC만 보고하고, 실패한 트랜잭션은 다음 시도를 개선하는 피드백으로 써야 합니다.
 
@@ -167,6 +170,9 @@
 - [2026-05-28 — Agora: LLM Agent를 이용한 Production-Level Consensus Protocol 자율 버그 탐지](https://arxiv.org/abs/2605.29910)
   - 공개된 사례 중 agentic consensus logic bug hunting에 가장 가까운 workflow를 배울 수 있습니다. 도메인 인식 에이전트가 프로토콜 상태를 유지하고, fault model 제약을 적용하고, 공격 시나리오를 합성하며, global safety invariant에 대해 가설을 반복 검증합니다. Raft, EPaxos, HotStuff, BullShark에서 보고한 15개의 알려지지 않았던 protocol-level logic bug는 고립된 코드 리뷰보다 상태 기반 시나리오 추론과 hypothesis-driven testing이 중요한 이유를 보여줍니다.
 
+- [2026-05 — ConcoLLMic: Agentic Concolic Execution](https://concollmic.github.io/)
+  - 언어별 symbolic model을 agentic concolic loop로 대체하는 방법을 배울 수 있습니다. source instrumentation으로 실제 실행 경로를 수집하고, path constraint를 의미 수준에서 요약하고, 다른 branch를 고른 뒤, 어려운 constraint는 grounded solver에 맡기고 새 입력을 생성해 coverage를 replay합니다. IEEE S&P 2026 연구는 KLEE보다 115–233% 많은 branch, 48시간 AFL++보다 81% 많은 coverage, 알려지지 않았던 취약점 10개 이상을 보고했습니다. 핵심은 LLM의 경로 추론을 실행 가능한 test, 입력 queue, 측정된 coverage로 grounding하는 것입니다.
+
 - [2026-05-12 — VulTriage: LLM 기반 취약점 탐지를 위한 Triple-Path Context Augmentation](https://arxiv.org/abs/2605.09461)
   - 미묘한 의미 차이로 갈리는 취약점을 위한 context packing 단계를 배울 수 있습니다. Control Path는 AST, CFG, DFG 정보를 말로 풀어주고, Knowledge Path는 CWE 기반 패턴과 예시를 검색하며, Semantic Path는 최종 판단 전에 코드 동작을 요약합니다. 완전한 자율 에이전트는 아니지만, 리뷰어에게 control-flow, data-flow, 사전 지식, 동작 요약을 구조화해서 제공하는 하네스 구성요소로 유용합니다.
 
@@ -210,6 +216,15 @@
   - iAudit의 2단계 스마트 컨트랙트 감사 루프를 배울 수 있습니다. Detector가 취약해 보이는 코드를 찾고, Reasoner가 원인을 제시한 뒤, Ranker와 Critic 에이전트가 어떤 원인이 증거를 가장 잘 설명하는지 토론합니다. 논리적 스마트 컨트랙트 finding에는 단순한 vulnerable/not-vulnerable 라벨보다 원인 선택과 적대적 정당화가 필요하다는 점이 핵심입니다.
 
 ## 프로젝트
+- [Google — Mantis](https://github.com/google/mantis)
+  - schema 기반 file handoff를 사용하는 portable agent skill로 security-review harness를 구성하는 방법을 배울 수 있습니다. architecture와 threat model에서 targeted research를 만들고, 독립적인 negative review와 production-viability gate를 거쳐 sandbox reproduction, exploit chaining, patch re-attack, calibration, reflection, reporting으로 이어집니다. snapshot-per-pass contract는 장기 audit 중 source drift를 막는 데 특히 유용하지만, 공개 저장소에는 end-to-end benchmark나 공개 취약점 성과가 없으므로 검증된 detector보다는 조정 가능한 workflow template로 봐야 합니다.
+
+- [Anthropic / Muhammad Maaz 외 — agentic-pbt](https://github.com/mmaaz-git/agentic-pbt)
+  - Anthropic의 property-based testing 결과를 만든 실행 가능한 artifact를 살펴볼 수 있습니다. Claude Code command가 의미적 property를 추론해 Hypothesis test로 바꾸고, test를 실행·수정하며, 순위 평가와 인간 검토를 위한 report를 보존합니다. 의심되는 invariant 위반이 finding이 되기 전에 최소화된 실행 가능 counterexample을 만들고, maintainer가 받아들인 fix를 외부 correctness signal로 사용하는 패턴이 가장 유용합니다.
+
+- [ConcoLLMic — Agentic Concolic Execution](https://github.com/ConcoLLMic/ConcoLLMic)
+  - source instrumentation, path log, queued YAML test case, grounded constraint solving, 비용 telemetry, replay, coverage measurement를 여러 언어에 제공하는 실행 가능한 agentic concolic engine을 살펴볼 수 있습니다. Docker 기반 experiment suite로 논문의 coverage와 vulnerability claim을 검토할 수 있고, 미탐색 branch를 서술형 추론에 맡기지 않고 다시 bug-hunting agent에 투입하는 구체적인 output artifact 모델을 제공합니다.
+
 - [lebronlambert — Agora](https://github.com/lebronlambert/Agora)
   - orchestrator, 프로토콜 인식 전략 생성, 반복적인 테스트 생성과 reflection, persistent knowledge, 확인된 버그의 variant mining으로 구성된 실행 가능한 consensus bug hunter를 살펴볼 수 있습니다. 단일 함수 취약점 패턴보다 상태 의존적인 consensus safety violation을 겨냥하는 에이전트 루프로 확장하기에 이 목록에서 가장 직접적인 프로젝트입니다.
 

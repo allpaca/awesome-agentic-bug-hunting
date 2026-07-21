@@ -6,7 +6,7 @@ A curated list of public resources about using coding agents, LLM-driven harness
 
 The focus is practical agentic bug hunting: source-code or binary exploration, vulnerability hypothesis generation, validation, PoC construction, triage, and repeatable harness design.
 
-Last reviewed: 2026-07-14
+Last reviewed: 2026-07-21
 
 ## Contents
 
@@ -121,6 +121,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-02-11 — OpenAI — Harness Engineering](https://openai.com/index/harness-engineering/)
   - Learn how OpenAI made agent work legible: AGENTS.md as a map, repo-local docs as the system of record, mechanical lint/CI checks, worktree-isolated app instances, DevTools, logs, metrics, and traces. For bug hunting, make the target equally inspectable and executable before autonomy: maps, threat docs, validation commands, observability, and cleanup loops.
 
+- [2026-01-14 — Anthropic — Finding Bugs Across the Python Ecosystem with Claude and Property-Based Testing](https://www.anthropic.com/research/property-based-testing)
+  - Learn an executable invariant-to-counterexample loop: an agent reads code, documentation, types, and names; proposes semantic properties; writes and runs Hypothesis tests; reflects on failures; and emits ranked bug reports. In the published evaluation, a 50-report manual sample from 984 generated reports was 56% valid and 32% reportable, while the top-ranked reports reached 86% valid and 81% reportable, with fixes merged upstream. The work targets general bugs rather than security alone, but its property inference and concrete counterexamples are directly useful for logical-vulnerability hunting.
+
 - [2025-12-01 — Anthropic — AI agents find $4.6M in blockchain smart contract exploits](https://www.anthropic.com/research/smart-contracts)
   - Learn how a domain sandbox changes agent behavior: MCP-exposed Foundry/anvil/cast tools, forked-chain state, executable tests, and a hard success signal based on a working exploit. For serious Web3 hunting, the loop should report only concrete, economically meaningful PoCs and treat failed transactions as feedback for the next exploit strategy.
 
@@ -167,6 +170,9 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-05-28 — Agora: Toward Autonomous Bug Detection in Production-Level Consensus Protocols with LLM Agents](https://arxiv.org/abs/2605.29910)
   - Learn the closest public workflow for agentic consensus-logic hunting: domain-aware agents maintain protocol state, enforce fault-model constraints, synthesize attack scenarios, and iteratively validate hypotheses against global safety invariants. Its 15 previously unknown protocol-level logic bugs across Raft, EPaxos, HotStuff, and BullShark show why stateful scenario reasoning and hypothesis-driven testing matter more than isolated code review.
 
+- [2026-05 — ConcoLLMic: Agentic Concolic Execution](https://concollmic.github.io/)
+  - Learn how to replace language-specific symbolic models with an agentic concolic loop: instrument source to capture concrete paths, summarize path constraints at the semantic level, choose alternate branches, delegate hard constraints to grounded solvers, generate new inputs, and replay them for coverage. The IEEE S&P 2026 work reports 115–233% more branch coverage than KLEE and 81% more than a 48-hour AFL++ run, plus more than 10 previously unknown vulnerabilities; the transferable lesson is to ground LLM path reasoning in executable tests, queued inputs, and measured coverage.
+
 - [2026-05-12 — VulTriage: Triple-Path Context Augmentation for LLM-Based Vulnerability Detection](https://arxiv.org/abs/2605.09461)
   - Learn a context-packing stage for subtle semantic vulnerabilities: a Control Path verbalizes AST, CFG, and DFG facts, a Knowledge Path retrieves CWE-derived patterns and examples, and a Semantic Path summarizes behavior before the final judgment. It is not a full autonomous agent, but it is a useful harness component for giving reviewers structured control-flow, data-flow, prior-knowledge, and behavior context.
 
@@ -210,6 +216,15 @@ Each entry is written as a short learning note: what to copy into an agentic bug
   - Learn iAudit's two-stage smart-contract audit loop: a Detector identifies likely vulnerable code, a Reasoner proposes causes, then Ranker and Critic agents debate which cause best explains the evidence. The useful workflow lesson is that logical smart-contract findings need cause selection and adversarial justification, not just a binary vulnerable/not-vulnerable label.
 
 ## Projects
+- [Google — Mantis](https://github.com/google/mantis)
+  - Learn how to express a security-review harness as portable agent skills with schema-backed file handoffs: architecture and threat modeling feed targeted research, then independent negative review and production-viability gates lead to sandboxed reproduction, exploit chaining, patch re-attack, calibration, reflection, and reporting. Its snapshot-per-pass contract is especially useful for preventing source drift in long-running audits; treat it as an adaptable workflow template rather than a validated detector because the public repository does not include an end-to-end benchmark or disclosed vulnerability results.
+
+- [Anthropic / Muhammad Maaz et al. — agentic-pbt](https://github.com/mmaaz-git/agentic-pbt)
+  - Study the runnable artifact behind Anthropic's property-based testing results: a Claude Code command infers semantic properties, turns them into Hypothesis tests, executes and repairs the tests, and preserves reports for ranking and human review. The most reusable security pattern is to make a suspected invariant violation produce a minimized executable counterexample before it becomes a finding, while using maintainer-accepted fixes as the external correctness signal.
+
+- [ConcoLLMic — Agentic Concolic Execution](https://github.com/ConcoLLMic/ConcoLLMic)
+  - Study a runnable agentic concolic engine with source instrumentation, path logs, queued YAML test cases, grounded constraint solving, cost telemetry, replay, and coverage measurement across multiple languages. Its Docker-backed experiment suite makes the paper's coverage and vulnerability claims inspectable, and the output artifacts provide a concrete model for feeding unexplored branches back into a bug-hunting agent instead of relying on narrative reasoning alone.
+
 - [lebronlambert — Agora](https://github.com/lebronlambert/Agora)
   - Study a runnable consensus bug-hunter organized around an orchestrator, protocol-aware strategy generation, iterative test generation and reflection, persistent knowledge, and confirmed-bug variant mining. It is the most direct project in this list for adapting an agent loop to state-dependent consensus safety violations rather than single-function vulnerability patterns.
 
