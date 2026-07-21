@@ -34,9 +34,6 @@
 - [2026-06-30 — Yue Xue — AI Auditing Methodology, Part III](https://x.com/xy9301/status/2071845290018284002)
   - 장기 실행 감사 시스템이 어떻게 실패하는지 배울 수 있습니다. vulnerability drift는 에이전트를 더 쉬운 주변 문제로 끌고 가고, reverse evolution은 프롬프트만 길게 만들 뿐 적중률을 높이지 못합니다. 재사용할 설계는 분해 → 작업 정의 → 추론이며, 각 작업은 대상, 경계, 증거, 완료 조건, 검증자, 국소적 개선 규칙으로 고정되어야 합니다.
 
-- [2026-06-26 — ClickHouse — AI로 취약점을 찾는 방법](https://clickhouse.com/blog/how-i-hunt-for-vulnerabilities-with-ai)
-  - 대형 C++ 시스템에서 사람이 검토에 참여하는 현실적인 워크플로를 배울 수 있습니다. LLM으로 구조를 탐색하고, 가설을 만들고, dataflow를 추적하고, PoC를 작성하되, 심각해 보이는 후보도 상당수는 틀릴 수 있다고 가정합니다. 자동화 시스템은 로컬 재현, 컨테이너 기반 실행 환경, 정확한 trigger condition, maintainer가 이해할 수 있는 충분한 증거를 요구해야 합니다.
-
 - [2026-06-25 — pkqs91 / Octane Security — Codex로 3개월 만에 $200k를 번 방법](https://x.com/pkqs91/status/2070157806104457395)
   - X 아티클이 설명하는 실제 버그바운티 흐름을 배울 수 있습니다. intake 단계에서는 범위, 심각도 규칙, 제외 조건, 문서, 코드를 로컬 분석 묶음으로 바꾸고, hunting 단계에서는 넓게 탐색하며, verification 단계에서는 범위 밖 후보, 방어 로직 때문에 불가능한 경로, 영향이 없는 실마리를 제거합니다. 핵심 규칙은 “넓게 탐색하고, 깊게 악용 가능성을 검증하라”이며, 영향 필터를 통과한 소수만 수동 재현해야 합니다.
 

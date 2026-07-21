@@ -34,9 +34,6 @@ Each entry is written as a short learning note: what to copy into an agentic bug
 - [2026-06-30 — Yue Xue — AI Auditing Methodology, Part III](https://x.com/xy9301/status/2071845290018284002)
   - Learn how long-running audit systems fail: vulnerability drift moves the agent to easier nearby issues, and reverse evolution makes prompts bigger without improving hit rate. The reusable design is decomposition → task definition → reasoning, with each task anchored by target, boundary, witness, completion condition, verifier, and local evolution rules.
 
-- [2026-06-26 — ClickHouse — How I Hunt for Vulnerabilities with AI](https://clickhouse.com/blog/how-i-hunt-for-vulnerabilities-with-ai)
-  - Learn a pragmatic human-in-the-loop workflow for large C++ systems: use LLMs to navigate architecture, propose hypotheses, trace dataflow, and write PoCs, but assume many high-severity-looking findings are false. The lesson for automation is to require local reproduction, containerized setup, exact trigger conditions, and evidence strong enough for a maintainer report.
-
 - [2026-06-25 — pkqs91 / Octane Security — How I Made $200k With Codex in 3 Months](https://x.com/pkqs91/status/2070157806104457395)
   - Learn the actual bug-bounty loop described in the X Article: intake turns scope, severity rules, exclusions, docs, and code into a local bundle; hunting explores wide; verification kills out-of-scope, guarded, or no-impact leads. The durable rule is “explore wide, exploit deep” and manually reproduce only the few candidates that survive impact filtering.
 
